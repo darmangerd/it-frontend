@@ -7,7 +7,12 @@ import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
 <template>
-  <HelloWorld msg="Vite + Vue" />
+  <p>
+    <router-link to="/">Home</router-link>
+    <router-link to="/about">About</router-link>
+  </p>
+  <router-view></router-view>
+
 </template>
 
 <style scoped>

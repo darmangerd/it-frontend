@@ -9,7 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "vuetify": "^3.0.1"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.42.1",

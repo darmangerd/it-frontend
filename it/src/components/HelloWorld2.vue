@@ -16,8 +16,7 @@ export default {
 
 
 <template>
-  <h1>it</h1>
-  <v-btn @click="count++" color="red">clicked me {{ count }} times.</v-btn>
+  <h1>Test</h1>
 </template>
 <style scoped>
 

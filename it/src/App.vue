@@ -6,6 +6,8 @@
 import HelloWorld from "./components/HelloWorld.vue";
 </script>
 
+
+
 <template>
 
   <p hidden>
@@ -14,7 +16,6 @@ import HelloWorld from "./components/HelloWorld.vue";
     <router-link to="/about">About</router-link>
   </p>
   <router-view></router-view>
-
 </template>
 
 <style scoped>

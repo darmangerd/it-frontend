@@ -3,6 +3,7 @@ import HelloWorldVue from "./components/HelloWorld.vue";
 import HelloWorldVueTest from "./components/HelloWorld2.vue";
 import ErrorVueVue from "./components/ErrorVue.vue";
 import Login from "./components/Login.vue";
+import Register from "./components/Register.vue";
 
 // 2. Define some routes
 // Each route should map to a component.
@@ -11,6 +12,7 @@ const routes = [
   { path: '/', component: HelloWorldVue },
   { path: '/about', component: HelloWorldVueTest },
   { path: '/login', component: Login },
+  { path: '/register', component: Register },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: ErrorVueVue },
 ]
 

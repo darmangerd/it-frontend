@@ -34,14 +34,14 @@
 
     <v-form v-model="form" @submit.prevent="onSubmit">
       <v-text-field :readonly="loading" :rules="[required]" clearable
-      class="my-5" label="Username" type="text" hint="Enter your username to login"
+      class="my-5" label="Username" type="text" hint="Enter your username to register"
       v-model="username"></v-text-field>
 
       <v-text-field :readonly="loading" :rules="[required]" clearable
-      label="Password" type="password" hint="Enter your password to login"
+      label="Password" type="password" hint="Enter your password to register"
       v-model="password"></v-text-field>
 
-      <div class="text-caption">Weight {{ weight }} kg</div>
+      <div class="text-caption mt-5">Weight {{ weight }} kg</div>
       <v-slider v-model="weight" :min="40" :max="150" step="10"
       :thumb-size="15" color="rgb(66, 199, 140)" show-ticks="always"></v-slider>
 

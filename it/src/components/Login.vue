@@ -2,7 +2,7 @@
     export default {
         data: () => ({
         form: false,
-        email: null,
+        username: null,
         password: null,
         loading: false,
         }),
@@ -23,56 +23,29 @@
 </script>
 
 <template>
-    <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
-    <h2>Login page</h2>
+  <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
 
-  <v-responsive
-    class="mx-auto"
-    max-width="384"
-  >
-  <v-form
-    v-model="form"
-    @submit.prevent="onSubmit"
-  >
-    <v-text-field 
-    :readonly="loading"
-          :rules="[required]"
-          clearable
-    class="my-5"
-    
-      label="Username"
-      type="text"
-      hint="Enter your username to login"
-    ></v-text-field>
+  <v-responsive class="mx-auto px-5" max-width="450">
+    <h2 id="form"><v-icon icon="mdi-account"></v-icon></h2>
 
-    <v-text-field
-    :readonly="loading"
-          :rules="[required]"
-          clearable
-      label="Password"
-      type="password"
-      hint="Enter your password to login"
-    ></v-text-field>
+    <v-form v-model="form" @submit.prevent="onSubmit">
+      <v-text-field :readonly="loading" :rules="[required]" clearable
+      class="my-5" label="Username" type="text" hint="Enter your username to login"
+      v-model="username"></v-text-field>
 
-      
-      <v-btn 
-        :disabled="!form"
-        :loading="loading"
-        type="submit"
-        class="my-5 mx-2"
-        id="btnPrimary"
-        depressed
-        large
-        to="/home"
-      >Login</v-btn>
-      <v-btn to="/register" type="submit"
-        class="my-5"
-        id="btnSecondary"
-        depressed
-        large>Register</v-btn>
-    </v-form>
+      <v-text-field :readonly="loading" :rules="[required]" clearable
+      label="Password" type="password" hint="Enter your password to login"
+      v-model="password"></v-text-field>
+
+      <div id="form">
+        <v-btn :disabled="!form" :loading="loading" type="submit" class="my-5 mx-2"
+        id="btnPrimary" depressed large to="/home">Login</v-btn>
+
+        <v-btn to="/register" type="submit" class="my-5" id="btnSecondary"
+        depressed large>Register</v-btn>
+      </div>
+      </v-form>
   </v-responsive>
-
 </template>
 
 <style>
@@ -105,7 +78,11 @@
   color: white;
   font-weight: bolder;
   background: rgb(66, 199, 140);
-  transition: 1s;
+  transition: all 0.5s ;
 }
 
+#form {
+  display: flex;
+  justify-content: center;
+}
 </style>

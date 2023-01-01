@@ -1,25 +1,39 @@
 <script lang="ts">
+import axios from 'axios'
+
     export default {
         data: () => ({
         form: false,
         username: null,
         password: null,
         loading: false,
+        error: false,
         }),
 
         methods: {
-        onSubmit () {
-            if (!this.form) return
-
-            this.loading = true
-
-            setTimeout(() => (this.loading = false), 2000)
+          async login() {
+          try {
+            const response = await axios.post('http://127.0.0.1:8000/auth/login/', {
+              username: this.username,
+              password: this.password
+              
+            })
+            localStorage.setItem('token', response.data.token)
+            console.log(response.data)
+            //this.$router.push('/')
+          } catch (error) {
+            this.error = true
+            setTimeout(() => {
+              this.error = false
+            }, 3000)
+          }
         },
-        required (v) {
+        required (v: any) {
             return !!v || 'Field is required'
         },
         },
     }
+
 </script>
 
 <template>
@@ -28,7 +42,7 @@
   <v-responsive class="mx-auto px-5" max-width="450">
     <h2 id="form"><v-icon icon="mdi-account"></v-icon></h2>
 
-    <v-form v-model="form" @submit.prevent="onSubmit">
+    <v-form v-model="form" @submit.prevent="login">
       <v-text-field :readonly="loading" :rules="[required]" clearable
       class="my-5" label="Username" type="text" hint="Enter your username to login"
       v-model="username"></v-text-field>
@@ -39,12 +53,15 @@
 
       <div id="form">
         <v-btn :disabled="!form" :loading="loading" type="submit" class="my-5 mx-2"
-        id="btnPrimary" depressed large to="/home">Login</v-btn>
+        id="btnPrimary" depressed large>Login</v-btn>
 
         <v-btn to="/register" type="submit" class="my-5" id="btnSecondary"
         depressed large>Register</v-btn>
       </div>
-      </v-form>
+    </v-form>
+    <v-alert v-if="error" type="error" :value="true">
+      Invalid username or password. Please verify your credentials and try again.
+    </v-alert>
   </v-responsive>
 </template>
 

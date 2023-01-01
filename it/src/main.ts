@@ -2,6 +2,8 @@ import { createApp } from "vue";
 import "./style.css";
 import App from "./App.vue";
 import {router} from "./router";
+import axios from "axios";
+
 
 // Vuetify
 import 'vuetify/styles'
@@ -16,3 +18,5 @@ const vuetify = createVuetify({
 })
 
 createApp(App).use(vuetify).use(router).mount('#app')
+
+axios.defaults.baseURL = "http://127.0.0.1:8000/it/";

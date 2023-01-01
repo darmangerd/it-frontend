@@ -4,7 +4,7 @@ import axios from 'axios'
     export default {
         data: () => ({
         form: false,
-        username: null,
+        username: "",
         password: null,
         loading: false,
         error: false,
@@ -19,8 +19,10 @@ import axios from 'axios'
               
             })
             localStorage.setItem('token', response.data.token)
-            console.log(response.data)
-            //this.$router.push('/')
+            localStorage.setItem('username', this.username)
+            console.log(localStorage.getItem('token'))
+            console.log(localStorage.getItem('username'))
+            this.$router.push('/main')
           } catch (error) {
             this.error = true
             setTimeout(() => {

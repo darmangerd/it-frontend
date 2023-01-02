@@ -19,7 +19,7 @@ export default {
       totalProtein : 0,
       totalFat : 0,
       totalCarbs : 0,
-      selectedDate: null,
+      dataTable: [],
     }
   },
 
@@ -129,79 +129,93 @@ export default {
 
     },
 
-    // dateChanged() {
-    //   this.date = this.selectedDate
-    //   this.getMealByDateAndUser()
-    // },
+    async dateChanged() {
+      this.clearTable()
+      this.foodItems = []
+      this.dataTable = []
+      this.food = []
+      this.food_id = []
+      this.quantity = []
+      
+
+      const date = this.$refs.dateInput.value;
+      this.date = new Date(date).toISOString().slice(0, 10);
+      this.getMealByDateAndUser()
+    },
+
+    async clearTable() {
+      this.foodItems = []
+      this.dataTable = []
+
+      // A COMPLETER
+    }
   }
 }
 </script>
 
 <template>
-    <!-- <v-date-picker v-model="selectedDate" @input="dateChanged"></v-date-picker> -->
-    <h2 v-if="noMeal" style="text-align:center;">No meal registered for today<v-icon class="pl-3" icon="mdi-cancel"></v-icon></h2>
-    <div id="content" v-else>
-      <h4 style="text-align:center; margin-top:2cm;">Journal from {{ date }}</h4>
-        <v-table fixed-header height="300px" theme="dark" class="my-5">
-        <thead>
-          <tr>
-            <th class="text-left">Name</th>
-            <th class="text-left">Quantity</th>
-            <th class="text-left">Calories</th>
-            <th class="text-left">Protein</th>
-            <th class="text-left">Carbs</th>
-            <th class="text-left">Fat</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="item in foodItems" :key="item.name">
-            <td id="pop">{{ item.name }}</td>
-            <td><b>{{ item.quantity }}g</b></td>
-            <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
-            <td>{{ item.protein }}g</td>
-            <td>{{ item.carbs }}g</td>
-            <td>{{ item.fat }}g</td>
-          </tr>
-        </tbody>
-      </v-table>
+  <h3 style="text-align:center; margin-top:2cm; margin-bottom: 2cm;">Journal from <input type="date" ref="dateInput" @input="dateChanged" /></h3>
 
-        <v-container align="center" style="display: flex; justify-content: center;">
-        <v-row>
-          <v-col cols="12">
-            <h2>Summary</h2>
-            <br/>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="elevation-1" color="#77D88F" dark>
-              <v-card-title class="headline white--text">Total calories</v-card-title>
-              <v-card-text class="white--text">{{ totalCalories }}</v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="elevation-1" color="#3BC39F" dark>
-              <v-card-title class="headline white--text">Total protein</v-card-title>
-              <v-card-text class="white--text">{{ totalProtein }}</v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="elevation-1" color="#00A49E" dark>
-              <v-card-title class="headline white--text">Total fat</v-card-title>
-              <v-card-text class="white--text">{{ totalFat }}</v-card-text>
-            </v-card>
-          </v-col>
-          <v-col cols="12" sm="6" md="6">
-            <v-card class="elevation-1" color="#0091A1" dark>
-              <v-card-title class="headline white--text">Total carbs</v-card-title>
-              <v-card-text class="white--text">{{ totalCarbs }}</v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </div>
-    
-
+  <h2 v-if="noMeal" style="text-align:center;">No meal registered for this date <v-icon class="pl-3" icon="mdi-cancel"></v-icon></h2>
   
-  </template>
+  <div id="content" v-else>
+      <v-table fixed-header height="300px" theme="dark" :items="dataTable">
+      <thead>
+        <tr>
+          <th class="text-left">Name</th>
+          <th class="text-left">Quantity</th>
+          <th class="text-left">Calories</th>
+          <th class="text-left">Protein</th>
+          <th class="text-left">Carbs</th>
+          <th class="text-left">Fat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in foodItems" :key="item.name">
+          <td id="pop">{{ item.name }}</td>
+          <td><b>{{ item.quantity }}g</b></td>
+          <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
+          <td>{{ item.protein }}g</td>
+          <td>{{ item.carbs }}g</td>
+          <td>{{ item.fat }}g</td>
+        </tr>
+      </tbody>
+    </v-table>
+
+    <v-container align="center" style="display: flex; justify-content: center; margin-top: 2cm;">
+      <v-row>
+        <v-col cols="12">
+          <h2>Summary</h2>
+          <br/>
+        </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="elevation-1" color="#77D88F" dark>
+            <v-card-title class="headline white--text">Total calories</v-card-title>
+            <v-card-text class="white--text">{{ totalCalories }}</v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="elevation-1" color="#3BC39F" dark>
+            <v-card-title class="headline white--text">Total protein</v-card-title>
+            <v-card-text class="white--text">{{ totalProtein }}</v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="elevation-1" color="#00A49E" dark>
+            <v-card-title class="headline white--text">Total fat</v-card-title>
+            <v-card-text class="white--text">{{ totalFat }}</v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" sm="6" md="6">
+          <v-card class="elevation-1" color="#0091A1" dark>
+            <v-card-title class="headline white--text">Total carbs</v-card-title>
+            <v-card-text class="white--text">{{ totalCarbs }}</v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </div>
+</template>
   
 <style scoped>
 
@@ -217,6 +231,19 @@ export default {
 
 .elevation-1:hover {
   transform: scale(1.05);
+}
+
+input[type="date"] {
+    padding: 0.5rem;
+    border-radius: 4px;
+    background-color: #1b1b1b;
+    transition: all 0.6s ease;
+    color: white;
+    font-weight: bolder;
+}
+input[type="date"]:hover {
+    cursor: pointer;
+    scale: 1.04;
 }
 
 </style>

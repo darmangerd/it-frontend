@@ -48,7 +48,7 @@ import axios from 'axios'
   <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
 
   <v-responsive class="mx-auto px-5" max-width="450">
-    <h2 id="form"><v-icon icon="mdi-account"></v-icon></h2>
+    <h2 id="formIcon"><v-icon icon="mdi-account"></v-icon></h2>
 
     <v-form v-model="form" @submit.prevent="login">
       <v-text-field :readonly="loading" :rules="[required]" clearable
@@ -59,17 +59,19 @@ import axios from 'axios'
       label="Password" type="password" hint="Enter your password to login"
       v-model="password"></v-text-field>
 
-      <div id="form">
-        <v-btn :disabled="!form" :loading="loading" type="submit" class="my-5 mx-2"
+      <div id="formButtons">
+        <v-btn :disabled="!form" :loading="loading" type="submit" class="mx-2"
         id="btnPrimary" depressed large>Login</v-btn>
 
-        <v-btn to="/register" type="submit" class="my-5" id="btnSecondary"
+        <v-btn to="/register" type="submit" id="btnSecondary"
         depressed large>Register</v-btn>
       </div>
     </v-form>
-    <v-alert v-if="error" type="error" :value="true">
+
+    <v-alert v-if="error" type="warning" :value="true">
       Invalid username or password. Please verify your credentials and try again.
     </v-alert>
+
   </v-responsive>
 </template>
 
@@ -87,9 +89,7 @@ import axios from 'axios'
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-#title span:hover {
-    color: rgb(66,246,118);
-}
+
 
 #btnPrimary {
   color: white;
@@ -106,8 +106,19 @@ import axios from 'axios'
   transition: all 0.5s ;
 }
 
-#form {
+#formIcon {
+  text-align: center;
+  font-size: 2em;
+}
+
+#formButtons {
   display: flex;
   justify-content: center;
+  margin-top: 5%;
+}
+
+.v-alert {
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 </style>

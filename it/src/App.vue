@@ -26,7 +26,7 @@ export default {
 
 <template>
   <template v-if="hasToken" >
-    <h2 id="title">Hello <span>{{ username }}</span>  :)</h2>
+    <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
     <div id="nav">
       <v-btn color="black" id="homeBtn" class="mx-4" to="/main"><v-icon icon="mdi-home"></v-icon></v-btn>
       <v-btn color="black" to="/food"><v-icon class="pr-3" icon="mdi-plus"></v-icon>Add food</v-btn>
@@ -40,6 +40,21 @@ export default {
 </template>
 
 <style scoped>
+#titleApp {
+    text-align: center;
+    margin-top: 6%;
+    font-size: 3em;
+    margin-bottom: 6%;
+}
+#titleApp span {
+    color: rgb(66,246,118);
+    color: linear-gradient(90deg, rgba(66,246,118,1) 0%, rgba(97,245,219,1) 50%, rgba(0,188,255,1) 100%);
+    background: -webkit-linear-gradient(90deg, rgba(66,246,118,1) 0%, rgba(97,245,219,1) 50%, rgba(0,188,255,1) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+
 #nav {
   display: flex;
   justify-content: center;

@@ -47,6 +47,7 @@ export default {
         this.getQuantityByMeal()
         } catch (error) {
         console.error(error)
+        console.log(this.token)
         }
     },
 

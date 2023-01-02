@@ -9,7 +9,7 @@
         height: 100,
         selectedOption: 'm',
         }),
-        
+
         // created() {
         // if (localStorage.getItem('token')) {
         //     this.$router.push('/main')
@@ -35,7 +35,7 @@
   <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
 
   <v-responsive class="mx-auto px-5" max-width="450">
-    <h2 id="form"><v-icon>mdi-account-plus</v-icon></h2>
+    <h2 id="formIcon"><v-icon>mdi-account-plus</v-icon></h2>
 
     <v-form v-model="form" @submit.prevent="onSubmit">
       <v-text-field :readonly="loading" :rules="[required]" clearable
@@ -60,13 +60,19 @@
           <v-radio label="female" value="f"></v-radio>
       </v-radio-group>
 
-      <div id="form">
-        <v-btn class="my-5 mx-2" id="btnSecondary" depressed
+      <div id="formButtons">
+        <v-btn class="mx-2" id="btnSecondary" depressed
         large to="/">Login</v-btn>
       
-        <v-btn type="submit" :disabled="!form" :loading="loading" class="my-5" 
+        <v-btn type="submit" :disabled="!form" :loading="loading"  
         id="btnPrimary" depressed to="/register" large>Register</v-btn>
       </div>
     </v-form>
+    
   </v-responsive>
 </template>
+<style scoped>
+.v-form {
+    margin-bottom: 10%;
+}
+</style>

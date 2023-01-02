@@ -9,6 +9,7 @@ export default {
       data: [],
       username: localStorage.getItem('username'),
       date : dateToday,
+      noMeal : false,
       meal_id : null,
       food_id : [],
       food : [],
@@ -41,10 +42,15 @@ export default {
             date: this.date,
           }
         })
-        console.log("meal_id: ", response.data[0].id)
-        this.meal_id = response.data[0].id
-        // get quantity by meal from today
-        this.getQuantityByMeal()
+        console.log("meal_id: ", response.data)
+        if (response.data.length == 0) {
+          this.noMeal = true
+        } else {
+          this.noMeal = false
+          this.meal_id = response.data[0].id
+          // get quantity by meal from today
+          this.getQuantityByMeal()
+        }
         } catch (error) {
         console.error(error)
         console.log(this.token)
@@ -66,6 +72,12 @@ export default {
           this.food_id.push(response.data[i].id_food)
           this.quantity.push(response.data[i].gram)       
         }
+        if (this.food_id.length == 0) {
+          this.noMeal = true
+        } else {
+          this.noMeal = false
+        }
+
         console.log("food_id: " + this.food_id)
         // get food by id
         this.getFoodById()
@@ -126,61 +138,67 @@ export default {
 </script>
 
 <template>
-       <!-- <v-date-picker v-model="selectedDate" @input="dateChanged"></v-date-picker> -->
-    <h4 style="text-align:center; margin-top:2cm;">Journal from {{ date }}</h4>
-    <v-table fixed-header height="300px" theme="dark" class="my-5">
-    <thead>
-      <tr>
-        <th class="text-left">Name</th>
-        <th class="text-left">Quantity</th>
-        <th class="text-left">Calories</th>
-        <th class="text-left">Protein</th>
-        <th class="text-left">Carbs</th>
-        <th class="text-left">Fat</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="item in foodItems" :key="item.name">
-        <td id="pop">{{ item.name }}</td>
-        <td><b>{{ item.quantity }}g</b></td>
-        <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
-        <td>{{ item.protein }}g</td>
-        <td>{{ item.carbs }}g</td>
-        <td>{{ item.fat }}g</td>
-      </tr>
-    </tbody>
-  </v-table>
+    <!-- <v-date-picker v-model="selectedDate" @input="dateChanged"></v-date-picker> -->
+    <h2 v-if="noMeal" style="text-align:center;">No meal registered for today<v-icon class="pl-3" icon="mdi-cancel"></v-icon></h2>
+    <div id="content" v-else>
+      <h4 style="text-align:center; margin-top:2cm;">Journal from {{ date }}</h4>
+        <v-table fixed-header height="300px" theme="dark" class="my-5">
+        <thead>
+          <tr>
+            <th class="text-left">Name</th>
+            <th class="text-left">Quantity</th>
+            <th class="text-left">Calories</th>
+            <th class="text-left">Protein</th>
+            <th class="text-left">Carbs</th>
+            <th class="text-left">Fat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in foodItems" :key="item.name">
+            <td id="pop">{{ item.name }}</td>
+            <td><b>{{ item.quantity }}g</b></td>
+            <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
+            <td>{{ item.protein }}g</td>
+            <td>{{ item.carbs }}g</td>
+            <td>{{ item.fat }}g</td>
+          </tr>
+        </tbody>
+      </v-table>
 
-    <v-container class="ma-4" align="center">
-    <h2>Summary</h2>
-    <br/>
-    <v-row>
-      <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#77D88F" dark>
-          <v-card-title class="headline white--text">Total calories</v-card-title>
-          <v-card-text class="white--text">{{ totalCalories }}</v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#3BC39F" dark>
-          <v-card-title class="headline white--text">Total protein</v-card-title>
-          <v-card-text class="white--text">{{ totalProtein }}</v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#00A49E" dark>
-          <v-card-title class="headline white--text">Total fat</v-card-title>
-          <v-card-text class="white--text">{{ totalFat }}</v-card-text>
-        </v-card>
-      </v-col>
-      <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#0091A1" dark>
-          <v-card-title class="headline white--text">Total carbs</v-card-title>
-          <v-card-text class="white--text">{{ totalCarbs }}</v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+        <v-container align="center" style="display: flex; justify-content: center;">
+        <v-row>
+          <v-col cols="12">
+            <h2>Summary</h2>
+            <br/>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="elevation-1" color="#77D88F" dark>
+              <v-card-title class="headline white--text">Total calories</v-card-title>
+              <v-card-text class="white--text">{{ totalCalories }}</v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="elevation-1" color="#3BC39F" dark>
+              <v-card-title class="headline white--text">Total protein</v-card-title>
+              <v-card-text class="white--text">{{ totalProtein }}</v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="elevation-1" color="#00A49E" dark>
+              <v-card-title class="headline white--text">Total fat</v-card-title>
+              <v-card-text class="white--text">{{ totalFat }}</v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" sm="6" md="6">
+            <v-card class="elevation-1" color="#0091A1" dark>
+              <v-card-title class="headline white--text">Total carbs</v-card-title>
+              <v-card-text class="white--text">{{ totalCarbs }}</v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
+    
 
   
   </template>
@@ -200,4 +218,5 @@ export default {
 .elevation-1:hover {
   transform: scale(1.05);
 }
+
 </style>

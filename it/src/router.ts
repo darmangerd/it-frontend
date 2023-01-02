@@ -5,16 +5,22 @@ import ErrorVueVue from "./components/ErrorVue.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Main from "./components/Main.vue";
+import Food from "./components/Food.vue";
+import Meal from "./components/Meal.vue";
+import history from "./components/History.vue";
+
 
 // 2. Define some routes
 // Each route should map to a component.
 // We'll talk about nested routes later.
 const routes = [
-  { path: '/', component: HelloWorldVue },
+  { path: '/', component: Login },
   { path: '/about', component: HelloWorldVueTest },
-  { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/main', component: Main },
+  { path: '/food', component: Food },
+  { path: '/meal', component: Meal },
+  { path: '/history', component: history },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: ErrorVueVue },
 ]
 

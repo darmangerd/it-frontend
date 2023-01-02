@@ -18,29 +18,15 @@ export default {
       totalProtein : 0,
       totalFat : 0,
       totalCarbs : 0,
-      //foodItems : [{id: null, name: null, quantity: null, calories: null, protein: null, fat: null, carbs: null}]
+      selectedDate: null,
     }
   },
-  created() {
-    //this.fetchData(),
-    this.getMealByDateAndUser()
-    //this.getMeal_UserId()
-  },
-  methods: {
-    // async fetchData() {
-    //   const token = localStorage.getItem('token')
-    //   try {
-    //     const response = await axios.get(axios.defaults.baseURL + 'client/', {
-    //       headers: {
-    //         'Authorization': `Token ${token}`
-    //       }
-    //     })
-    //     this.data = response.data
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // },
 
+  created() {
+    this.getMealByDateAndUser()
+  },
+
+  methods: {
     async getMealByDateAndUser() {
       const token = localStorage.getItem('token')
       try {
@@ -49,6 +35,7 @@ export default {
             'Authorization': `Token ${token}`,
           },
           params: {
+            //id: localStorage.getItem('user_id')
             id: 1,
             //date : "2022-11-03",
             date: this.date,
@@ -79,7 +66,6 @@ export default {
           this.quantity.push(response.data[i].gram)       
         }
         console.log("food_id: " + this.food_id)
-        // console.log(this.quantity)
         // get food by id
         this.getFoodById()
         } catch (error) {
@@ -100,16 +86,6 @@ export default {
             }
             })
             this.food.push(response.data[0])
-            console.log("HERE" + response.data[0].name)
-
-            // populate foodItems
-            // this.foodItems[i].id = response.data[0].id
-            // this.foodItems[i].name = response.data[0].name
-            // this.foodItems[i].quantity = this.quantity[i]
-            // this.foodItems[i].calories = response.data[0].calories
-            // this.foodItems[i].protein = response.data[0].protein
-            // this.foodItems[i].fat = response.data[0].fat
-            // this.foodItems[i].carbs = response.data[0].carbs
             }
             // create a new object that contains the food and the quantity and calories per 100g
             this.foodItems = this.food.map((food, i) => {
@@ -139,74 +115,73 @@ export default {
         }
 
     },
+
+    // dateChanged() {
+    //   this.date = this.selectedDate
+    //   this.getMealByDateAndUser()
+    // },
   }
 }
 </script>
 
 <template>
-    <br/>
-    <h2 id="title">Hello <span>{{ username }}</span>  :)</h2>
+       <!-- <v-date-picker v-model="selectedDate" @input="dateChanged"></v-date-picker> -->
     <h4 style="text-align:center; margin-top:2cm;">Journal from {{ date }}</h4>
     <v-table fixed-header height="300px" theme="dark" class="my-5">
-        <thead>
-            <tr>
-                <th class="text-left">
-                Name
-                </th>
-                <th class="text-left">
-                Calories
-                </th>
-                <th class="text-left">
-                Quantity
-                </th>
-                <th class="text-left">
-                Calories
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr
-                v-for="item in foodItems"
-                :key="item.name"
-            >
-                <td id="pop">{{ item.name }}</td>
-                <td>{{ item.calories }}</td>
-                <td>{{ item.quantity }}</td>
-                <td><b>{{ item.calories * item.quantity / 100 }}</b></td>
-            </tr>
-        </tbody>
-    </v-table>
+    <thead>
+      <tr>
+        <th class="text-left">Name</th>
+        <th class="text-left">Quantity</th>
+        <th class="text-left">Calories</th>
+        <th class="text-left">Protein</th>
+        <th class="text-left">Carbs</th>
+        <th class="text-left">Fat</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="item in foodItems" :key="item.name">
+        <td id="pop">{{ item.name }}</td>
+        <td><b>{{ item.quantity }}g</b></td>
+        <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
+        <td>{{ item.protein }}g</td>
+        <td>{{ item.carbs }}g</td>
+        <td>{{ item.fat }}g</td>
+      </tr>
+    </tbody>
+  </v-table>
 
     <v-container class="ma-4" align="center">
     <h2>Summary</h2>
     <br/>
     <v-row>
       <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#00B697" dark>
+        <v-card class="elevation-1" color="#77D88F" dark>
           <v-card-title class="headline white--text">Total calories</v-card-title>
           <v-card-text class="white--text">{{ totalCalories }}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#00A49E" dark>
+        <v-card class="elevation-1" color="#3BC39F" dark>
           <v-card-title class="headline white--text">Total protein</v-card-title>
           <v-card-text class="white--text">{{ totalProtein }}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#0091A1" dark>
+        <v-card class="elevation-1" color="#00A49E" dark>
           <v-card-title class="headline white--text">Total fat</v-card-title>
           <v-card-text class="white--text">{{ totalFat }}</v-card-text>
         </v-card>
       </v-col>
       <v-col cols="12" sm="6" md="6">
-        <v-card class="elevation-1" color="#006994" dark>
+        <v-card class="elevation-1" color="#0091A1" dark>
           <v-card-title class="headline white--text">Total carbs</v-card-title>
           <v-card-text class="white--text">{{ totalCarbs }}</v-card-text>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
+
+  
   </template>
   
 <style scoped>
@@ -214,5 +189,14 @@ export default {
 #pop {
   color: #42c78c;
   font-weight: bolder;
+}
+
+.elevation-1 {
+  transition: all 0.4s ease;
+  font-weight: bolder;
+}
+
+.elevation-1:hover {
+  transform: scale(1.05);
 }
 </style>

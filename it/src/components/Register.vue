@@ -9,6 +9,12 @@
         height: 100,
         selectedOption: 'm',
         }),
+        
+        // created() {
+        // if (localStorage.getItem('token')) {
+        //     this.$router.push('/main')
+        // }
+        // },
 
         methods: {
         onSubmit () {
@@ -56,7 +62,7 @@
 
       <div id="form">
         <v-btn class="my-5 mx-2" id="btnSecondary" depressed
-        large to="/login">Login</v-btn>
+        large to="/">Login</v-btn>
       
         <v-btn type="submit" :disabled="!form" :loading="loading" class="my-5" 
         id="btnPrimary" depressed to="/register" large>Register</v-btn>

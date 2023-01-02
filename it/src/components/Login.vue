@@ -10,6 +10,12 @@ import axios from 'axios'
         error: false,
         }),
 
+        // created() {
+        // if (localStorage.getItem('token')) {
+        //     this.$router.push('/main')
+        // }
+        // },
+
         methods: {
           async login() {
           try {

@@ -2,10 +2,9 @@
     export default {
         data: () => ({
         form: false,
-        username: null,
+        username: "",
         password: null,
         loading: false,
-        radios: null,
         weight: 40,
         height: 100,
         selectedOption: 'm',

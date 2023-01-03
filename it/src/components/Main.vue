@@ -69,7 +69,7 @@ export default {
             date: this.date,
           }
         })
-        console.log("date: ", this.date)
+        // console.log("date: ", this.date)
         console.log("meal_id: ", response.data)
         if (response.data.length == 0) {
           this.hasNoMeal = true
@@ -81,7 +81,6 @@ export default {
         }
         } catch (error) {
         console.error(error)
-        console.log(this.token)
         }
     },
 
@@ -106,7 +105,7 @@ export default {
           this.hasNoMeal = false
         }
 
-        console.log("food_id: " + this.food_id)
+        // console.log("food_id: " + this.food_id)
         // get food by id
         this.getFoodById()
         } catch (error) {
@@ -147,7 +146,7 @@ export default {
           }
         })
         this.client = response.data[0]
-        console.log("client: ", this.client)
+        // console.log("client: ", this.client)
       } catch (error) {
         console.error(error)
       }
@@ -158,10 +157,10 @@ export default {
       return 10 * this.client.weight_kg + 6.25 * this.client.height_cm
     },
 
-    createMeal() {
+    async createMeal() {
       const token = localStorage.getItem('token')
       try {
-        axios.post(axios.defaults.baseURL + 'meal/', {
+        const response = await axios.post(axios.defaults.baseURL + 'meal/', {
           date: this.date,
           id_user: 1,
         }, {
@@ -169,30 +168,37 @@ export default {
             'Authorization': `Token ${token}`,
           },
         });
+        console.log("meal_idCREATE: ", response.data.id)
+        return response.data.id
       } catch (error) {
         console.error(error.response)
       }
     },
 
-    addFood() {
+    async addFood() {
+      console.log("add food")
+      console.log("meal_id: ", this.meal_id)
+      console.log("date: ", this.date)
+      if (this.hasNoMeal) {
+        this.meal_id = await this.createMeal()
+        this.hasNoMeal = false
+        console.log("meal_id_ADDFOOD: ", this.meal_id)
+      }
+
       // get the id of the selected food
       for (let i = 0; i < this.allFoodsData.length; i++) {
         if (this.allFoodsData[i].name == this.selectedFood) {
           this.selectedFoodId = this.allFoodsData[i].id
         }
       }
-      console.log(`Selected food: ${this.selectedFood}`)
-      console.log(`Selected food id: ${this.selectedFoodId}`)
-      console.log(`Quantity: ${this.quantityInput}`)
+      // console.log(`Selected food id: ${this.selectedFoodId}`)
+      // console.log(`Quantity: ${this.quantityInput}`)
+      // console.log("meal_idFINAL: ", this.meal_id)
 
       // add quantity to the database
       const token = localStorage.getItem('token')
-      if (this.hasNoMeal) {
-        this.createMeal();
-        this.getMealByDateAndUser();
-      }
       try {
-        axios.post(axios.defaults.baseURL + 'quantity/', {
+        const response = await axios.post(axios.defaults.baseURL + 'quantity/', {
         gram: this.quantityInput,
         id_food: this.selectedFoodId,
         id_meal: this.meal_id,
@@ -205,8 +211,6 @@ export default {
         this.clearTable()
         this.getMealByDateAndUser()
       }
-
-      
       this.successAlert = true
           setTimeout(() => {
               this.successAlert = false
@@ -214,7 +218,6 @@ export default {
       } catch (error) {
           console.error(error.response)
       }
-
       // add the food id and quantity to the arrays
     },
 
@@ -245,7 +248,7 @@ export default {
               }
             })
             this.summary()
-            console.log(this.food)
+            // console.log(this.food)
         } catch (error) {
         console.error(error)
         }

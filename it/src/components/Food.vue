@@ -4,6 +4,10 @@ import axios from 'axios'
 export default {
   data() {
     return {
+      // setup 
+      hasToken: !!localStorage.getItem('token'),
+
+      // form
       valid: false,
       errorAlert: false,
       successAlert: false,
@@ -39,6 +43,11 @@ export default {
           v => v.length <= 3 || 'Carbohydrates must be less than 5 characters',
       ],
     }
+    },
+    created() {
+      if (!this.hasToken) {
+        this.$router.push('/')
+      }
     },
     methods: {
         async createFood() {

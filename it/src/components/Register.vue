@@ -10,11 +10,12 @@
         selectedOption: 'm',
         }),
 
-        // created() {
-        // if (localStorage.getItem('token')) {
-        //     this.$router.push('/main')
-        // }
-        // },
+        // redirect if user is still logged in
+        created() {
+        if (localStorage.getItem('token')) {
+            this.$router.push('/main')
+        }
+        },
 
         methods: {
         onSubmit () {

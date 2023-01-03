@@ -11,6 +11,7 @@ export default {
       username: localStorage.getItem('username'),
       userId: localStorage.getItem('user_id'),
       date : new Date().toISOString().slice(0, 10),
+      hasToken: !!localStorage.getItem('token'),
 
       // client information
       client : [],
@@ -53,11 +54,17 @@ export default {
   },
 
   created() {
+    if (!this.hasToken) {
+      this.$router.push('/')
+    }
+    else {
+      this.getMealByDateAndUser(),
+      this.getFoods(),
+      this.getClient()
+    }
     // this.getUserIdByUsername(),
     // this.getUser(),
-    this.getMealByDateAndUser(),
-    this.getFoods(),
-    this.getClient()
+    
   },
 
   methods: {

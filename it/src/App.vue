@@ -5,35 +5,42 @@ export default {
           hasToken: !!localStorage.getItem('token'),
           username: localStorage.getItem('username'),
         }),
-        
-        // created() {
-        // if (localStorage.getItem('token')) {
-        //     this.$router.push('/main')
-        // }
-        // },
-
-        // methods: {
-        
-        // },
+        created() {
+          // reload everythime a page is loaded
+          this.hasToken = !!localStorage.getItem('token');
+          this.$router.afterEach((to, from) => {
+            this.hasToken = !!localStorage.getItem('token');
+            this.username = localStorage.getItem('username');
+          });
+        },
+        methods: {
+          async logout() {
+            // confirm logout
+            const confirm = window.confirm('Are you sure you want to logout?');
+            if (confirm) {
+              localStorage.clear();
+              this.hasToken = false;
+              this.$router.push('/');
+            }
+          }
+        }
     }
-
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-
 </script>
 
-
-
 <template>
-  <template v-if="hasToken" >
+  <div v-if="hasToken" >
+    <div class="fixed-top">
+      <v-btn @click="logout" id="btnLogout" class="ma-4" color="black" dark>
+        <v-icon icon="mdi-logout"></v-icon>
+      </v-btn>
+    </div>
     <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
     <div id="nav">
       <v-btn color="black" id="homeBtn" to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
       <v-btn color="black" to="/food" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
       <v-btn color="black" to="/history"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
     </div>
-      
-  </template>
+  </div>
   
   <router-view></router-view>
 </template>
@@ -41,9 +48,10 @@ export default {
 <style scoped>
 #titleApp {
     text-align: center;
-    margin-top: 6%;
+    margin-top: 1.5cm;
     font-size: 3em;
-    margin-bottom: 6%;
+    margin-bottom: 1.3cm;
+
 }
 #titleApp span {
     color: rgb(66,246,118);
@@ -52,7 +60,6 @@ export default {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
 
 #nav {
   display: flex;
@@ -74,6 +81,14 @@ export default {
 .v-btn:active {
   background-color: #0376e8;
   transform: scale(1.07)
+}
+
+#btnLogout {
+  border-radius: 100%;
+  height: 60px;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 </style>

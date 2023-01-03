@@ -1,11 +1,15 @@
 <script>
 import axios from 'axios'
 
+// TO CHANGE IN FINAL VERSION
+localStorage.setItem('user_id', 1)
+
 export default {
   data() {
     return {
       // initalization
       username: localStorage.getItem('username'),
+      userId: localStorage.getItem('user_id'),
       date : new Date().toISOString().slice(0, 10),
 
       // client information
@@ -49,12 +53,56 @@ export default {
   },
 
   created() {
+    // this.getUserIdByUsername(),
+    // this.getUser(),
     this.getMealByDateAndUser(),
     this.getFoods(),
     this.getClient()
   },
 
   methods: {
+    // async getUser() {
+    //   try {
+    //     const token = localStorage.getItem('token')
+    //     const response = await axios.get('http://localhost:8000/it/auth/user/', {
+    //       headers: {
+    //         'Authorization': `Token ${token}`,
+    //       }
+    //     })
+    //     console.log("main")
+    //     console.log(response)
+    //     // The user's primary key is stored in response.data.id
+    //   } catch (error) {
+    //     console.error(error)
+    //   }
+    // },
+
+
+    // async getUserIdByUsername() {
+    //   const token = localStorage.getItem('token')
+    //   console.log("token: ", token)
+    //   try {
+    //     const response = await axios.get('/users/', {
+    //       headers: {
+    //         'Authorization': `Token ${token}`
+    //       },
+    //       params: {
+    //         username: 'billy'
+    //       }
+    //     })
+    //     console.log(response.data);
+
+    //     // if (response.data.length > 0) {
+    //     //   console.log(response.data[0].id);
+    //     //   // Return the first user's ID if multiple users have the same username
+    //     //   return response.data[0].id;
+    //     // }
+    //     // return null;
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // },
+
     async getMealByDateAndUser() {
       const token = localStorage.getItem('token')
       try {
@@ -64,7 +112,7 @@ export default {
           },
           params: {
             //id: localStorage.getItem('user_id')
-            id: 1,
+            id: this.userId,
             //date : "2022-11-03",
             date: this.date,
           }
@@ -142,7 +190,7 @@ export default {
           },
           params: {
             //id: localStorage.getItem('user_id')
-            id_user: 1,
+            id_user: this.userId,
           }
         })
         this.client = response.data[0]
@@ -162,7 +210,7 @@ export default {
       try {
         const response = await axios.post(axios.defaults.baseURL + 'meal/', {
           date: this.date,
-          id_user: 1,
+          id_user: this.userId,
         }, {
           headers: {
             'Authorization': `Token ${token}`,

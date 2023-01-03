@@ -14,30 +14,30 @@ export default {
         lipids_g: null,
         carbohydrates_g: null,
       },
-        nameRules: [
-            v => !!v || 'Name is required',
-            v => v.length <= 50 || 'Name must be less than 50 characters',
-        ],
-        kcalRules: [
-            v => !!v || 'Energy is required',
-            v => !isNaN(v) || 'Energy must be a number',
-            v => v.length <= 5 || 'Energy must be less than 5 characters',
-        ],
-        proteinRules: [
-            v => !!v || 'Proteins are required',
-            v => !isNaN(v) || 'Proteins must be a number',
-            v => v.length <= 3 || 'Proteins must be less than 5 characters',
-        ],
-        lipidRules: [
-            v => !!v || 'Lipids are required',
-            v => !isNaN(v) || 'Lipids must be a number',
-            v => v.length <= 3 || 'Lipids must be less than 5 characters',
-        ],
-        carbohydrateRules: [
-            v => !!v || 'Carbohydrates are required',
-            v => !isNaN(v) || 'Carbohydrates must be a number',
-            v => v.length <= 3 || 'Carbohydrates must be less than 5 characters',
-        ],
+      nameRules: [
+          v => !!v || 'Name is required',
+          v => v.length <= 30 || 'Name must be less than 30 characters',
+      ],
+      kcalRules: [
+          v => !!v || 'Energy is required',
+          v => !isNaN(v) || 'Energy must be a number',
+          v => v.length <= 5 || 'Energy must be less than 5 characters',
+      ],
+      proteinRules: [
+          v => !!v || 'Proteins are required',
+          v => !isNaN(v) || 'Proteins must be a number',
+          v => v.length <= 3 || 'Proteins must be less than 5 characters',
+      ],
+      lipidRules: [
+          v => !!v || 'Lipids are required',
+          v => !isNaN(v) || 'Lipids must be a number',
+          v => v.length <= 3 || 'Lipids must be less than 5 characters',
+      ],
+      carbohydrateRules: [
+          v => !!v || 'Carbohydrates are required',
+          v => !isNaN(v) || 'Carbohydrates must be a number',
+          v => v.length <= 3 || 'Carbohydrates must be less than 5 characters',
+      ],
     }
     },
     methods: {

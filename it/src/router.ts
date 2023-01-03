@@ -6,7 +6,6 @@ import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
 import Main from "./components/Main.vue";
 import Food from "./components/Food.vue";
-import Meal from "./components/Meal.vue";
 import history from "./components/History.vue";
 
 
@@ -19,7 +18,6 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/main', component: Main },
   { path: '/food', component: Food },
-  { path: '/meal', component: Meal },
   { path: '/history', component: history },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: ErrorVueVue },
 ]

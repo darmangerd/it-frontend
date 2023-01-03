@@ -28,9 +28,8 @@ export default {
   <template v-if="hasToken" >
     <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
     <div id="nav">
-      <v-btn color="black" id="homeBtn" class="mx-4" to="/main"><v-icon icon="mdi-home"></v-icon></v-btn>
-      <v-btn color="black" to="/food"><v-icon class="pr-3" icon="mdi-plus"></v-icon>Add food</v-btn>
-      <v-btn color="black" to="/meal" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Meals</v-btn>
+      <v-btn color="black" id="homeBtn" to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
+      <v-btn color="black" to="/food" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
       <v-btn color="black" to="/history"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
     </div>
       

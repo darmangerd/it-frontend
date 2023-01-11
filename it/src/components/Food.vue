@@ -44,11 +44,6 @@ export default {
       ],
     }
     },
-    created() {
-      if (!this.hasToken) {
-        this.$router.push('/')
-      }
-    },
     methods: {
         async createFood() {
             const token = localStorage.getItem('token')

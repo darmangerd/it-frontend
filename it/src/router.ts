@@ -31,6 +31,19 @@ const router = createRouter({
   routes, // short for `routes: routes`
 })
 
+// contrôler l'accès aux pages en fonction de l'authentification
+router.beforeEach((to, from, next) => {
+  const publicPages = ["/", "/register"];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem("token");
+
+  if (authRequired && !loggedIn) {
+    return next("/");
+  }
+
+  next();
+});
+
 export {router};
 
 // Now the app has started!

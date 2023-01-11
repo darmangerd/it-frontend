@@ -2,7 +2,6 @@
 import axios from 'axios'
 
 // TO CHANGE IN FINAL VERSION
-localStorage.setItem('user_id', 1)
 
 export default {
   data() {
@@ -54,63 +53,16 @@ export default {
   },
 
   created() {
-    if (!this.hasToken) {
-      this.$router.push('/')
-    }
-    else {
-      this.getMealByDateAndUser(),
-      this.getFoods(),
-      this.getClient()
-    }
-    // this.getUserIdByUsername(),
-    // this.getUser(),
-    
+    this.userId = localStorage.getItem('user_id')
+    this.getMealByDateAndUser(),
+    this.getFoods(),
+    this.getClient()
   },
 
   methods: {
-    // async getUser() {
-    //   try {
-    //     const token = localStorage.getItem('token')
-    //     const response = await axios.get('http://localhost:8000/it/auth/user/', {
-    //       headers: {
-    //         'Authorization': `Token ${token}`,
-    //       }
-    //     })
-    //     console.log("main")
-    //     console.log(response)
-    //     // The user's primary key is stored in response.data.id
-    //   } catch (error) {
-    //     console.error(error)
-    //   }
-    // },
-
-
-    // async getUserIdByUsername() {
-    //   const token = localStorage.getItem('token')
-    //   console.log("token: ", token)
-    //   try {
-    //     const response = await axios.get('/users/', {
-    //       headers: {
-    //         'Authorization': `Token ${token}`
-    //       },
-    //       params: {
-    //         username: 'billy'
-    //       }
-    //     })
-    //     console.log(response.data);
-
-    //     // if (response.data.length > 0) {
-    //     //   console.log(response.data[0].id);
-    //     //   // Return the first user's ID if multiple users have the same username
-    //     //   return response.data[0].id;
-    //     // }
-    //     // return null;
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // },
-
     async getMealByDateAndUser() {
+      console.log("date: ", this.date)
+      console.log("user_id: ", this.userId)
       const token = localStorage.getItem('token')
       try {
         const response = await axios.get(axios.defaults.baseURL + 'meal/', {
@@ -119,18 +71,19 @@ export default {
           },
           params: {
             //id: localStorage.getItem('user_id')
-            id: this.userId,
+            id_user: this.userId,
             //date : "2022-11-03",
             date: this.date,
           }
         })
         // console.log("date: ", this.date)
-        console.log("meal_id: ", response.data)
+        console.log("all meals: ", response.data)
         if (response.data.length == 0) {
           this.hasNoMeal = true
         } else {
           this.hasNoMeal = false
           this.meal_id = response.data[0].id
+          console.log("meal_id: ", this.meal_id)
           // get quantity by meal from today
           this.getQuantityByMeal()
         }
@@ -150,6 +103,7 @@ export default {
             id_meal: this.meal_id,
           }
         })
+        console.log("quantity: ", response.data)
         for (let i = 0; i < response.data.length; i++) {
           this.food_id.push(response.data[i].id_food)
           this.quantity.push(response.data[i].gram)       
@@ -196,12 +150,12 @@ export default {
             'Authorization': `Token ${token}`,
           },
           params: {
-            //id: localStorage.getItem('user_id')
             id_user: this.userId,
           }
         })
+        console.log("client: ", response.data)
         this.client = response.data[0]
-        // console.log("client: ", this.client)
+        console.log("client: ", this.client)
       } catch (error) {
         console.error(error)
       }
@@ -216,8 +170,8 @@ export default {
       const token = localStorage.getItem('token')
       try {
         const response = await axios.post(axios.defaults.baseURL + 'meal/', {
-          date: this.date,
           id_user: this.userId,
+          date: this.date,
         }, {
           headers: {
             'Authorization': `Token ${token}`,

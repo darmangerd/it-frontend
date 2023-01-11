@@ -3,11 +3,6 @@ export default {
         data: () => ({
           hasToken: !!localStorage.getItem('token'),
         }),
-        created() {
-          if (!this.hasToken) {
-            this.$router.push('/')
-          }
-        },
 
         methods: {
           // TODO

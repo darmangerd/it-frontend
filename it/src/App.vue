@@ -18,7 +18,9 @@ export default {
             // confirm logout
             const confirm = window.confirm('Are you sure you want to logout?');
             if (confirm) {
-              localStorage.clear();
+              localStorage.removeItem('token');
+              localStorage.removeItem('username');
+              localStorage.removeItem('user_id');
               this.hasToken = false;
               this.$router.push('/');
             }

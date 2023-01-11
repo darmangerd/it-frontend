@@ -3,18 +3,19 @@ import axios from 'axios'
 
     export default {
         data: () => ({
-        form: false,
-        username: "",
-        password: null,
-        loading: false,
-        error: false,
+          form: false,
+          username: "",
+          userId: null,
+          password: null,
+          loading: false,
+          error: false,
         }),
 
         // redirect if user is still logged in
         created() {
-        if (localStorage.getItem('token')) {
-            this.$router.push('/main')
-        }
+          if (localStorage.getItem('token')) {
+              this.$router.push('/main')
+          }
         },
 
         methods: {
@@ -25,10 +26,15 @@ import axios from 'axios'
               password: this.password
               
             })
+
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('username', this.username)
+            await this.getUserIdByUsername()
+            // localStorage.setItem('user_id', this.userId)
+            // console.log("user_id: ", this.userId)
             console.log(localStorage.getItem('token'))
             console.log(localStorage.getItem('username'))
+            console.log(localStorage.getItem('user_id'))
             this.$router.push('/main')
           } catch (error) {
             this.error = true
@@ -40,6 +46,33 @@ import axios from 'axios'
         required (v: any) {
             return !!v || 'Field is required'
         },
+        async getUserIdByUsername() {
+        const token = localStorage.getItem('token')
+        console.log("token: ", token)
+        try {
+          const response = await axios.get('/users/', {
+            headers: {
+              'Authorization': `Token ${token}`
+            },
+            params: {
+              username: this.username
+            }
+          })
+
+          localStorage.setItem('user_id', response.data[0].id)
+
+          // localStorage.setItem('user_id', response.data[0].id)
+
+          // if (response.data.length > 0) {
+          //   console.log(response.data[0].id);
+          //   // Return the first user's ID if multiple users have the same username
+          //   return response.data[0].id;
+          // }
+          // return null;
+        } catch (error) {
+          console.error(error);
+        }
+      },
         },
     }
 

@@ -23,6 +23,7 @@ export default {
       food_id : [],
       food : [],
       quantity : [],
+      quantityId : [],
       foodItems : [],
       dataTable: [],
 
@@ -49,6 +50,11 @@ export default {
       ],
       valid: false,
       successAlert: false,
+
+      // delete food dialog
+      confirmationDialog: false,
+      quantityToDelete: null,
+
     }
   },
 
@@ -106,8 +112,11 @@ export default {
         console.log("quantity: ", response.data)
         for (let i = 0; i < response.data.length; i++) {
           this.food_id.push(response.data[i].id_food)
-          this.quantity.push(response.data[i].gram)       
+          this.quantity.push(response.data[i].gram)
+          this.quantityId.push(response.data[i].id)       
         }
+        console.log("quantity HERE" , this.quantity)
+        console.log("quantityId HERE" , this.quantityId)
         if (this.food_id.length == 0) {
           this.hasNoMeal = true
         } else {
@@ -250,6 +259,7 @@ export default {
                 id: food.id,
                 name: food.name,
                 quantity: this.quantity[i],
+                quantityId: this.quantityId[i],
                 calories: food.energy_kcal,
                 protein: food.proteins_g,
                 fat: food.lipids_g,
@@ -257,7 +267,7 @@ export default {
               }
             })
             this.summary()
-            // console.log(this.food)
+            console.log(this.foodItems)
         } catch (error) {
         console.error(error)
         }
@@ -285,11 +295,13 @@ export default {
       this.food = []
       this.food_id = []
       this.quantity = []
+      this.quantityId = []
       this.totalCalories = 0
       this.totalProtein = 0
       this.totalFat = 0
       this.totalCarbs = 0
       this.caloriesLeft = 0
+      this.quantityToDelete = null
     },
 
     async dateChanged() {
@@ -298,7 +310,37 @@ export default {
       this.date = new Date(date).toISOString().slice(0, 10);
       this.getMealByDateAndUser()
     },
-  }
+    openConfirmationDialog(itemId) {
+       this.confirmationDialog = true;
+       this.selectedId = itemId;
+   },
+   deleteItem(itemId) {
+       this.confirmationDialog = false;
+       this.deleteFood(itemId);
+   },
+    async deleteFood(itemId) {
+      this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
+      console.log("quantityToDelete: ", this.quantityToDelete)
+      // WORKING DELETE QUANTITY
+      // const token = localStorage.getItem('token')
+      // try {
+      //   const response = await axios.delete(axios.defaults.baseURL + 'quantity/', {
+      //   headers: {
+      //           'Authorization': `Token ${token}`,
+      //       },
+      //       params: {
+      //           id: this.quantityToDelete,
+      //       }
+      //       })
+
+      // } catch (error) {
+      //   console.error(error)
+      // }
+      console.log("delete food id: ", itemId)
+      console.log("meal_id: ", this.meal_id)
+      //quuantity id
+    },
+  },
 }
 </script>
 
@@ -321,6 +363,16 @@ export default {
   
   <h2 v-if="hasNoMeal" style="text-align:center;">No meal registered for this date <v-icon class="pl-3" icon="mdi-cancel"></v-icon></h2>
   <div id="content" v-else>
+    <v-dialog v-model="confirmationDialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">Confirmation</v-card-title>
+        <v-card-text>Are you sure you want to delete this item?</v-card-text>
+        <v-card-actions>
+          <v-btn color="green darken-1" text @click="confirmationDialog = false">Cancel</v-btn>
+          <v-btn color="red darken-1" text @click="deleteItem(selectedId)">Delete</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
       <v-table fixed-header height="300px" theme="dark" :items="dataTable">
       <thead>
         <tr>
@@ -330,6 +382,7 @@ export default {
           <th class="text-left">Protein</th>
           <th class="text-left">Carbs</th>
           <th class="text-left">Fat</th>
+          <th class="text-left">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -340,6 +393,7 @@ export default {
           <td>{{ item.protein }}g</td>
           <td>{{ item.carbs }}g</td>
           <td>{{ item.fat }}g</td>
+          <td><v-btn color="error" @click="openConfirmationDialog(item.id)">x</v-btn></td>
         </tr>
       </tbody>
     </v-table>

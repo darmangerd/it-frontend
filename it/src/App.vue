@@ -61,6 +61,7 @@ export default {
     background: -webkit-linear-gradient(90deg, rgba(66,246,118,1) 0%, rgba(97,245,219,1) 50%, rgba(0,188,255,1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    transition: all 0.1s ease;
 }
 
 #nav {
@@ -92,6 +93,14 @@ export default {
   top: 0;
   right: 0;
 }
+
+/* make #titleApp span disapear on small screen */
+@media only screen and (max-width: 870px) {
+  #titleApp {
+    font-size: 1.5em;
+  }
+}
+
 
 </style>
 

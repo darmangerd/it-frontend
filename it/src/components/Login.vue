@@ -9,12 +9,20 @@ import axios from 'axios'
           password: null,
           loading: false,
           error: false,
+          register: false,
         }),
 
         // redirect if user is still logged in
         created() {
           if (localStorage.getItem('token')) {
               this.$router.push('/main')
+          }
+          // redirect if user has just registered
+          if (this.$route.query.registered) {
+            this.register = true
+            setTimeout(() => {
+              this.register = false
+            }, 3000)
           }
         },
 
@@ -24,9 +32,7 @@ import axios from 'axios'
             const response = await axios.post('http://127.0.0.1:8000/auth/login/', {
               username: this.username,
               password: this.password
-              
             })
-
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('username', this.username)
             await this.getUserIdByUsername()
@@ -80,6 +86,9 @@ import axios from 'axios'
 
 <template>
   <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
+  <v-alert v-if="register" type="info" :value="true">
+      Register completed successfully! Please login.
+  </v-alert>
 
   <v-responsive class="mx-auto px-5" max-width="450">
     <h2 id="formIcon"><v-icon icon="mdi-account"></v-icon></h2>
@@ -101,11 +110,9 @@ import axios from 'axios'
         depressed large>Register</v-btn>
       </div>
     </v-form>
-
     <v-alert v-if="error" type="warning" :value="true">
       Invalid username or password. Please verify your credentials and try again.
     </v-alert>
-
   </v-responsive>
 </template>
 
@@ -151,7 +158,7 @@ import axios from 'axios'
 }
 
 .v-alert {
-  margin-top: 5%;
+  margin-top: 2%;
   margin-bottom: 5%;
 }
 </style>

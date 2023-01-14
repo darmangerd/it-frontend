@@ -128,15 +128,14 @@ import axios from 'axios'
 #btnPrimary {
   color: white;
   font-weight: bolder;
-  background: rgb(66,211,146);
-  background: linear-gradient(90deg, rgba(66,211,146,1) 27%, rgba(100,126,255,1) 100%);
+  background: rgb(66, 199, 140);
   transition: all 0.5s ease;
 }
 
 #btnSecondary {
   color: white;
   font-weight: bolder;
-  background: rgb(66, 199, 140);
+  background: rgb(87, 87, 87);
   transition: all 0.5s ;
 }
 

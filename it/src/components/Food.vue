@@ -109,7 +109,7 @@ export default {
       :rules="carbohydrateRules"
     ></v-text-field>
     <div id="formButtons">
-        <v-btn class="my-5" id="btnSecondary" depressed 
+        <v-btn class="my-5" id="btnPrimary" depressed 
         large :disabled="!valid" @click="createFood">Create Food</v-btn>
     </div>
   </v-form>

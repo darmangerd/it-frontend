@@ -68,6 +68,8 @@ export default {
   display: flex;
   justify-content: center;
   margin-bottom: 4em;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .v-btn {
@@ -94,10 +96,22 @@ export default {
   right: 0;
 }
 
-/* make #titleApp span disapear on small screen */
+
 @media only screen and (max-width: 870px) {
   #titleApp {
     font-size: 1.5em;
+  }
+}
+/* make #titleApp span disapear on phone screen */
+@media only screen and (max-width: 500px) {
+  #titleApp {
+    color : transparent;    
+  }
+  #titleApp span {
+    font-size: 0.9em;
+    /* color : transparent; 
+    color: linear-gradient(transparent, transparent);
+    background: -webkit-linear-gradient(transparent, transparent); */
   }
 }
 

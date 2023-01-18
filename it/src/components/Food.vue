@@ -20,7 +20,7 @@ export default {
       },
       nameRules: [
           v => !!v || 'Name is required',
-          v => v.length <= 30 || 'Name must be less than 30 characters',
+          v => v.length <= 20 || 'Name must be less than 20 characters',
       ],
       kcalRules: [
           v => !!v || 'Energy is required',
@@ -30,17 +30,17 @@ export default {
       proteinRules: [
           v => !!v || 'Proteins are required',
           v => !isNaN(v) || 'Proteins must be a number',
-          v => v.length <= 3 || 'Proteins must be less than 5 characters',
+          v => v.length <= 3 || 'Proteins must be less than 3 characters',
       ],
       lipidRules: [
           v => !!v || 'Lipids are required',
           v => !isNaN(v) || 'Lipids must be a number',
-          v => v.length <= 3 || 'Lipids must be less than 5 characters',
+          v => v.length <= 3 || 'Lipids must be less than 3 characters',
       ],
       carbohydrateRules: [
           v => !!v || 'Carbohydrates are required',
           v => !isNaN(v) || 'Carbohydrates must be a number',
-          v => v.length <= 3 || 'Carbohydrates must be less than 5 characters',
+          v => v.length <= 3 || 'Carbohydrates must be less than 3 characters',
       ],
     }
     },
@@ -82,7 +82,7 @@ export default {
 
 <template>
     <h2 id="title2">Create a food including the nutrition facts</h2>
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form id="ref" ref="form" v-model="valid" lazy-validation>
     <v-text-field
       v-model="food.name"
       label="Name"
@@ -125,5 +125,11 @@ export default {
 #title2 {
   text-align: center;
   margin-bottom: 10%;
+  margin-top: 10%;
+}
+
+#ref {
+  margin-left: 10%;
+  margin-right: 10%;
 }
 </style>

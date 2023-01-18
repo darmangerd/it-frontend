@@ -377,7 +377,7 @@ export default {
       <thead>
         <tr>
           <th class="text-left">Name</th>
-          <th class="text-left">Quantity</th>
+          <th class="text-left hide-small">Quantity</th>
           <th class="text-left">Calories</th>
           <th class="text-left hide">Protein</th>
           <th class="text-left hide">Carbs</th>
@@ -388,7 +388,7 @@ export default {
       <tbody>
         <tr v-for="item in foodItems" :key="item.name">
           <td id="pop">{{ item.name }}</td>
-          <td><b>{{ item.quantity }}g</b></td>
+          <td class="hide-small"><b>{{ item.quantity }}g</b></td>
           <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
           <td class="hide">{{ item.protein * item.quantity / 100 }}g</td>
           <td class="hide">{{ item.carbs * item.quantity / 100 }}g</td>
@@ -506,7 +506,7 @@ input[type="date"]:hover {
 }
 
 #table {
-  width: 80%;
+  width: 85%;
   min-width: 50%;
   margin: auto;
 }
@@ -534,6 +534,13 @@ input[type="date"]:hover {
 /* make #titleApp span disapear on small screen */
 @media only screen and (max-width: 600px) {
   .hide {
+    display: none;
+  }
+}
+
+/* make #titleApp span disapear on small screen */
+@media only screen and (max-width: 400px) {
+  .hide-small {
     display: none;
   }
 }

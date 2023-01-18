@@ -1,5 +1,7 @@
 <script lang="ts">
 import axios from 'axios'
+import { useRegisterStore } from '../store'
+const { state } = useRegisterStore()
 
     export default {
         data: () => ({
@@ -17,8 +19,7 @@ import axios from 'axios'
           if (localStorage.getItem('token')) {
               this.$router.push('/main')
           }
-          // redirect if user has just registered
-          if (this.$route.query.registered) {
+          if (state.hasRegister) {
             this.register = true
             setTimeout(() => {
               this.register = false

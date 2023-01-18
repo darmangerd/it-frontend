@@ -4,7 +4,6 @@ import App from "./App.vue";
 import {router} from "./router";
 import axios from "axios";
 
-
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -17,6 +16,10 @@ const vuetify = createVuetify({
   
 })
 
-createApp(App).use(vuetify).use(router).mount('#app')
+// Pinia
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+
+createApp(App).use(vuetify).use(router).use(pinia).mount('#app')
 
 axios.defaults.baseURL = "http://127.0.0.1:8000/it/";

@@ -1,5 +1,7 @@
 <script lang="ts">
 import axios from 'axios'
+import { useRegisterStore } from '../store'
+const { set } = useRegisterStore()
 
     export default {
         data: () => ({
@@ -51,9 +53,10 @@ import axios from 'axios'
               height_cm: this.height,
               gender: this.selectedOption
             })
-
+            // update hasRegister to true
+            set({ hasRegister: true })
             // redirect to login
-            this.$router.push({ path: '/', query: { registered: 'true' } })
+            this.$router.push({ path: '/' })
           } 
           catch (error) 
           {

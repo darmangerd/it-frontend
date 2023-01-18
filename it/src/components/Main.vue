@@ -373,15 +373,15 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-      <v-table fixed-header height="300px" theme="dark" :items="dataTable">
+      <v-table id="table" fixed-header height="300px" theme="dark" :items="dataTable">
       <thead>
         <tr>
           <th class="text-left">Name</th>
           <th class="text-left">Quantity</th>
           <th class="text-left">Calories</th>
-          <th class="text-left">Protein</th>
-          <th class="text-left">Carbs</th>
-          <th class="text-left">Fat</th>
+          <th class="text-left hide">Protein</th>
+          <th class="text-left hide">Carbs</th>
+          <th class="text-left hide">Fat</th>
           <th class="text-left">Actions</th>
         </tr>
       </thead>
@@ -390,9 +390,9 @@ export default {
           <td id="pop">{{ item.name }}</td>
           <td><b>{{ item.quantity }}g</b></td>
           <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
-          <td>{{ item.protein * item.quantity / 100 }}g</td>
-          <td>{{ item.carbs * item.quantity / 100 }}g</td>
-          <td>{{ item.fat * item.quantity / 100 }}g</td>
+          <td class="hide">{{ item.protein * item.quantity / 100 }}g</td>
+          <td class="hide">{{ item.carbs * item.quantity / 100 }}g</td>
+          <td class="hide">{{ item.fat * item.quantity / 100 }}g</td>
           <td><v-btn color="error" @click="openConfirmationDialog(item.id)">x</v-btn></td>
         </tr>
       </tbody>
@@ -459,8 +459,8 @@ export default {
 }
 
 #divSelect{
-  width: 40%;
-  min-width: 70%;
+  width: 80%;
+  min-width: 50%;
   margin: auto;
   text-align: center;
   margin-top: 2cm;
@@ -468,8 +468,8 @@ export default {
 }
 
 #divQuantity {
-  min-width: 70%;
-  width: 50%;
+  width: 60%;
+  min-width: 50%;
   margin: auto;
   text-align: center;
   margin-top: 4%;
@@ -505,6 +505,12 @@ input[type="date"]:hover {
     scale: 1.04;
 }
 
+#table {
+  width: 80%;
+  min-width: 50%;
+  margin: auto;
+}
+
 #calorie {
   display: flex;
   justify-content: center;
@@ -524,5 +530,13 @@ input[type="date"]:hover {
   margin-bottom: 2%;
   margin-top: 2%;
 }
+
+/* make #titleApp span disapear on small screen */
+@media only screen and (max-width: 600px) {
+  .hide {
+    display: none;
+  }
+}
+
 
 </style>

@@ -390,9 +390,9 @@ export default {
           <td id="pop">{{ item.name }}</td>
           <td><b>{{ item.quantity }}g</b></td>
           <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
-          <td>{{ item.protein }}g</td>
-          <td>{{ item.carbs }}g</td>
-          <td>{{ item.fat }}g</td>
+          <td>{{ item.protein * item.quantity / 100 }}g</td>
+          <td>{{ item.carbs * item.quantity / 100 }}g</td>
+          <td>{{ item.fat * item.quantity / 100 }}g</td>
           <td><v-btn color="error" @click="openConfirmationDialog(item.id)">x</v-btn></td>
         </tr>
       </tbody>

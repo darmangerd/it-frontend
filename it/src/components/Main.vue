@@ -119,6 +119,7 @@ export default {
         console.log("quantityId HERE" , this.quantityId)
         if (this.food_id.length == 0) {
           this.hasNoMeal = true
+          await this.deleteMeal()
         } else {
           this.hasNoMeal = false
         }
@@ -321,25 +322,41 @@ export default {
     async deleteFood(itemId) {
       this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
       console.log("quantityToDelete: ", this.quantityToDelete)
-      // WORKING DELETE QUANTITY
-      // const token = localStorage.getItem('token')
-      // try {
-      //   const response = await axios.delete(axios.defaults.baseURL + 'quantity/', {
-      //   headers: {
-      //           'Authorization': `Token ${token}`,
-      //       },
-      //       params: {
-      //           id: this.quantityToDelete,
-      //       }
-      //       })
-
-      // } catch (error) {
-      //   console.error(error)
-      // }
+      const token = localStorage.getItem('token')
+      try {
+        const response = await axios.delete(axios.defaults.baseURL + 'quantity/' + this.quantityToDelete, {
+        headers: {
+                'Authorization': `Token ${token}`,
+            },
+            })
+            this.clearTable()
+            this.getMealByDateAndUser()
+      } catch (error) {
+        console.error(error)
+      }
       console.log("delete food id: ", itemId)
       console.log("meal_id: ", this.meal_id)
-      //quuantity id
     },
+    async deleteMeal(){
+      this.mealToDelete = this.meal_id
+      const token = localStorage.getItem('token')
+      try {
+        const response = await axios.delete(axios.defaults.baseURL + 'meal/' + this.meal_id, {
+        headers: {
+                'Authorization': `Token ${token}`,
+            },
+            })
+            this.clearTable()
+            this.getMealByDateAndUser()
+            if (this.foodItems.length == 0) {
+              this.hasNoMeal = true
+
+            }
+
+      } catch (error) {
+        console.error(error)
+      }
+    }
   },
 }
 </script>

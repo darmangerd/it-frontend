@@ -1,9 +1,12 @@
 <script lang="ts">
 import * as c3 from 'c3'
 import * as d3 from 'd3'
+import axios from 'axios'
+
 export default {
   data() {
     return {
+      foodList: [],
       foodCount: [
         {name: 'concombre', value: 30},
         {name: 'pizza quatro fromagi', value: 200},
@@ -13,6 +16,25 @@ export default {
         {name: 'steak de boeuf', value: 250}
       ]
     }
+  },
+  created() {
+    this.getCount()
+  },
+  methods: {
+    async getCount() {
+      const token = localStorage.getItem('token')
+      try {
+        const response = await axios.get('foodcount/', {
+          headers: {
+            'Authorization': `Token ${token}`,
+          }
+        })
+        this.foodList = response.data
+        console.log(this.foodList)
+        } catch (error) {
+        console.error(error)
+        }
+    },
   },
   mounted() {
     let data = {

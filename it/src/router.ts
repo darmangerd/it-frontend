@@ -1,6 +1,4 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HelloWorldVue from "./components/HelloWorld.vue";
-import HelloWorldVueTest from "./components/HelloWorld2.vue";
 import ErrorVueVue from "./components/ErrorVue.vue";
 import Login from "./components/Login.vue";
 import Register from "./components/Register.vue";
@@ -14,7 +12,6 @@ import history from "./components/History.vue";
 // We'll talk about nested routes later.
 const routes = [
   { path: '/', component: Login },
-  { path: '/about', component: HelloWorldVueTest },
   { path: '/register', component: Register },
   { path: '/main', component: Main },
   { path: '/food', component: Food },

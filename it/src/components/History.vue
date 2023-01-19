@@ -1,8 +1,8 @@
 <template>
   <v-container>
     <div id="contain">
+      <h2>Food count</h2>
       <div v-if="hasMeal" id="chart">
-        <h2>Food count</h2>
       </div>
       <div v-else>
         <h2>No meals registered yet</h2>
@@ -85,13 +85,12 @@ export default {
   width: 100%;
 }
 
-#chart text {
-  stroke: white;
-  display: none;
+.chart {
+  
 }
 
-.c3-axis line {
-  stroke: white;
+#chart text {
+  display: none;
 }
 
 #contain {
@@ -129,6 +128,10 @@ export default {
   }
 
   #chart {
+    display: none;
+  }
+
+  h2 {
     display: none;
   }
 }

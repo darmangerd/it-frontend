@@ -3,6 +3,8 @@ import "./style.css";
 import App from "./App.vue";
 import {router} from "./router";
 import axios from "axios";
+import 'vuetify/dist/vuetify.min.css';
+import Vue from 'vue';
 
 // Vuetify
 import 'vuetify/styles'
@@ -13,6 +15,9 @@ import * as directives from 'vuetify/directives'
 const vuetify = createVuetify({
   components,
   directives,
+  theme: {
+    defaultTheme: 'dark',
+  },
   
 })
 

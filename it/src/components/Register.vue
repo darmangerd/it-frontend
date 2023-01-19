@@ -1,7 +1,7 @@
 <script lang="ts">
 import axios from 'axios'
+import { mapState, mapWritableState } from 'pinia'
 import { useRegisterStore } from '../store'
-const { set } = useRegisterStore()
 
     export default {
         data: () => ({
@@ -35,6 +35,10 @@ const { set } = useRegisterStore()
         }
         },
 
+        computed: {
+        ...mapWritableState(useRegisterStore, ["hasRegister"]),
+        },
+
         methods: {
         async register() {
           try {
@@ -54,7 +58,8 @@ const { set } = useRegisterStore()
               gender: this.selectedOption
             })
             // update hasRegister to true
-            set({ hasRegister: true })
+            this.hasRegister = true
+            console.log("hasRegister: ", this.hasRegister)
             // redirect to login
             this.$router.push({ path: '/' })
           } 

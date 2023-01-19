@@ -1,7 +1,7 @@
 <script lang="ts">
 import axios from 'axios'
 import { useRegisterStore } from '../store'
-const { state } = useRegisterStore()
+import { mapWritableState } from 'pinia'
 
     export default {
         data: () => ({
@@ -14,16 +14,22 @@ const { state } = useRegisterStore()
           register: false,
         }),
 
+        computed: { 
+          ...mapWritableState(useRegisterStore, ["hasRegister"]), 
+        },
+
         // redirect if user is still logged in
         created() {
           if (localStorage.getItem('token')) {
               this.$router.push('/main')
           }
-          if (state.hasRegister) {
+          console.log("hasRegister: ", this.hasRegister)
+          if (this.hasRegister) {
             this.register = true
             setTimeout(() => {
               this.register = false
             }, 3000)
+            this.hasRegister = false
           }
         },
 

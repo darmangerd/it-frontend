@@ -1,5 +1,7 @@
 
 <script lang="ts">
+
+
 export default {
         data: () => ({
           hasToken: !!localStorage.getItem('token'),
@@ -30,21 +32,24 @@ export default {
 </script>
 
 <template>
-  <div v-if="hasToken" >
-    <div class="fixed-top">
-      <v-btn @click="logout" id="btnLogout" class="ma-4" color="black" dark>
-        <v-icon icon="mdi-logout"></v-icon>
-      </v-btn>
+  <v-app>
+    <div v-if="hasToken" >
+      <div class="fixed-top">
+        <v-btn @click="logout" id="btnLogout" class="ma-4" color="black" dark>
+          <v-icon icon="mdi-logout"></v-icon>
+        </v-btn>
+      </div>
+      <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
+      <div id="nav">
+        <v-btn color="black" id="homeBtn" to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
+        <v-btn color="black" to="/food" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
+        <v-btn color="black" to="/history"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
+      </div>
     </div>
-    <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
-    <div id="nav">
-      <v-btn color="black" id="homeBtn" to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
-      <v-btn color="black" to="/food" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
-      <v-btn color="black" to="/history"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
-    </div>
-  </div>
-  
-  <router-view></router-view>
+
+    
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <style scoped>

@@ -21,9 +21,11 @@ export default {
     return {
       foodList: [],
       hasMeal: true,
+      userId: '',
     }
   },
   created() {
+    this.userId = localStorage.getItem('id_user')
     this.getCount()
   },
   mounted() {
@@ -48,10 +50,10 @@ export default {
     async getCount() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get('foodcount/', {
+        const response = await axios.get('foodcount?id_user=2', {
           headers: {
             'Authorization': `Token ${token}`,
-          }
+          },
         })
         this.foodList = response.data
         console.log(this.foodList)

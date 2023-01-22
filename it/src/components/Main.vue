@@ -55,6 +55,9 @@ export default {
       confirmationDialog: false,
       quantityToDelete: null,
 
+      // food count for plot
+      foodCount: [],
+
     }
   },
 
@@ -63,6 +66,9 @@ export default {
     this.getMealByDateAndUser(),
     this.getFoods(),
     this.getClient()
+
+    // plot
+    this.getFoodCount()
   },
 
   methods: {
@@ -350,13 +356,29 @@ export default {
             this.getMealByDateAndUser()
             if (this.foodItems.length == 0) {
               this.hasNoMeal = true
-
             }
-
       } catch (error) {
         console.error(error)
       }
+    },
+
+    async getFoodCount() {
+      const token = localStorage.getItem('token')
+      try {
+        const response = await axios.get('foodcount?id_user='+this.userId, {
+          headers: {
+            'Authorization': `Token ${token}`,
+          },
+        })
+        this.foodCount = response.data
+        console.log("foodCount: ", this.foodCount)
+
+        } catch (error) {
+        console.error(error)
+        }
     }
+    
+    
   },
 }
 </script>

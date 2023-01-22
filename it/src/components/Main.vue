@@ -55,6 +55,9 @@ export default {
       confirmationDialog: false,
       quantityToDelete: null,
 
+      // edit food dialog
+      errorEditAlert: false,
+
       // food count for plot
       foodCount: [],
 
@@ -274,7 +277,7 @@ export default {
               }
             })
             this.summary()
-            console.log(this.foodItems)
+            console.log("all food : ", this.foodItems)
         } catch (error) {
         console.error(error)
         }
@@ -325,6 +328,8 @@ export default {
        this.confirmationDialog = false;
        this.deleteFood(itemId);
    },
+
+   // delete food from the database
     async deleteFood(itemId) {
       this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
       console.log("quantityToDelete: ", this.quantityToDelete)
@@ -362,6 +367,41 @@ export default {
       }
     },
 
+    async updateQuantity(id, quantity) {
+      if (quantity < 1 || quantity > 99999 || quantity == null  || isNaN(quantity)) {
+        // show alert
+        this.errorEditAlert = true
+        setTimeout(() => {
+            this.errorEditAlert = false
+        }, 3000)
+      }
+      else
+      {
+        console.log("id: ", id)
+        console.log("quantity: ", quantity)
+        console.log("meal_id: ", this.meal_id)
+        const quantityId = this.foodItems.find(x => x.id === id).quantityId
+        console.log("quantityId: ", quantityId)
+
+        const token = localStorage.getItem('token')
+        try {
+            const response = await axios.patch(axios.defaults.baseURL + 'quantity/' + quantityId +'/', {
+                gram: quantity,
+                id_food: id,
+                id_meal: this.meal_id,
+            }, {
+                headers: {
+                    'Authorization': `Token ${token}`,
+                }
+            })
+            console.log(response.data)
+        } catch (error) {
+            console.error(error)
+        }
+      }
+    },
+
+    // get food count for plot
     async getFoodCount() {
       const token = localStorage.getItem('token')
       try {
@@ -412,12 +452,16 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-      <v-table id="table" fixed-header height="300px" theme="dark" :items="dataTable">
+    <v-alert v-if="errorEditAlert" type="error" :value="true">
+        Please enter a valid quantity.
+        Must be a number between 1 and 99999.
+    </v-alert>
+    <v-table id="table" fixed-header height="300px" theme="dark" :items="dataTable">
       <thead>
         <tr>
           <th class="text-left">Name</th>
-          <th class="text-left hide-small">Quantity</th>
-          <th class="text-left">Calories</th>
+          <th class="text-left">Quantity [g]</th>
+          <th class="text-left hide-small">Calories</th>
           <th class="text-left hide">Protein</th>
           <th class="text-left hide">Carbs</th>
           <th class="text-left hide">Fat</th>
@@ -427,8 +471,12 @@ export default {
       <tbody>
         <tr v-for="item in foodItems" :key="item.name">
           <td id="pop">{{ item.name }}</td>
-          <td class="hide-small"><b>{{ item.quantity }}g</b></td>
-          <td><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
+          <td>
+              <b>
+                  <input v-model.number="item.quantity" @input="updateQuantity(item.id, item.quantity)" type="number" min="1" max="99999" step="10">
+              </b>
+          </td>
+          <td class="hide-small"><b>{{ item.calories * item.quantity / 100 }} kcal</b></td>
           <td class="hide">{{ item.protein * item.quantity / 100 }}g</td>
           <td class="hide">{{ item.carbs * item.quantity / 100 }}g</td>
           <td class="hide">{{ item.fat * item.quantity / 100 }}g</td>

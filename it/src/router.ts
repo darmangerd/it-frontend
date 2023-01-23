@@ -15,7 +15,6 @@ const routes = [
   { path: '/register', component: Register },
   { path: '/main', component: Main },
   { path: '/food', component: Food },
-  { path: '/history', component: history },
   { path: '/:pathMatch(.*)*', name: 'NotFound', component: ErrorVueVue },
 ]
 

@@ -1,7 +1,7 @@
 <script>
-import axios from 'axios'
+import axios from 'axios';
+import Chart from 'chart.js/auto';
 
-// TO CHANGE IN FINAL VERSION
 
 export default {
   data() {
@@ -40,10 +40,10 @@ export default {
       selectedFoodId: null,
       quantityInput: null,
       quantityRules: [
-          v => !!v || 'Energy is required',
-          v => !isNaN(v) || 'Energy must be a number',
-          v => v>0 || 'Energy must be greater than 0',
-          v => v.length <= 5 || 'Energy must be less than 5 characters',
+          v => !!v || 'Quantity is required',
+          v => !isNaN(v) || 'Quantity must be a number',
+          v => v>0 || 'Quantity must be greater than 0',
+          v => v.length <= 5 || 'Quantity must be less than 5 characters',
       ],
       foodSelectedRules: [
           v => !!v || 'Food is required',
@@ -61,6 +61,8 @@ export default {
       // food count for plot
       foodCount: [],
 
+      // plot
+      chart : null,
     }
   },
 
@@ -236,9 +238,22 @@ export default {
         },
       });
       if (!this.hasNoMeal){
+        // deactivate add button for security purposes
+        // for 3 seconds -> not to add the same food twice
+        this.valid = false
+        setTimeout(() => {
+          this.valid = true
+        }, 3000)
+
+        
+        // clear the table
         this.clearTable()
+        // add elements to the table
         this.getMealByDateAndUser()
+        // plot the graph
+        this.createChart()
       }
+      // show that the food was added
       this.successAlert = true
           setTimeout(() => {
               this.successAlert = false
@@ -246,7 +261,6 @@ export default {
       } catch (error) {
           console.error(error.response)
       }
-      // add the food id and quantity to the arrays
     },
 
     async getFoodById() {
@@ -340,14 +354,19 @@ export default {
                 'Authorization': `Token ${token}`,
             },
             })
+            // clear the table
             this.clearTable()
+            // add elements to the table
             this.getMealByDateAndUser()
+            // plot the graph
+            this.createChart()
       } catch (error) {
         console.error(error)
       }
       console.log("delete food id: ", itemId)
       console.log("meal_id: ", this.meal_id)
     },
+    
     async deleteMeal(){
       this.mealToDelete = this.meal_id
       const token = localStorage.getItem('token')
@@ -416,14 +435,56 @@ export default {
         } catch (error) {
         console.error(error)
         }
-    }
-    
-    
-  },
+    },
+
+    async createChart() {
+            await this.getFoodCount()
+
+            // on récupère les noms des aliments
+            const foods = this.foodCount.map((food) => food.name);
+            // on récupère les nombres d'aliments
+            const counts = this.foodCount.map((food) => food.count);
+
+            // on crée le graphe
+            const ctx = document.getElementById('chart');
+
+            if (this.chart) {
+                this.chart.destroy();
+            }
+
+            this.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: foods,
+                    datasets: [{
+                        label: 'Count all your food',
+                        data: counts,
+                        backgroundColor: 'rgba(75, 235, 165, 0.2)',
+                        borderColor: 'rgba(75, 235, 165, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+      },
+    mounted() {
+        this.createChart()
+    },
+
 }
 </script>
 
 <template>
+  <div class="plot">
+    <canvas id="chart"></canvas>
+  </div>
   <div id="divSelect">
     <h3>Journal from <input type="date" v-bind:value="date" ref="dateInput" @input="dateChanged" /></h3>
   </div>
@@ -551,7 +612,6 @@ export default {
   margin: auto;
   text-align: center;
   margin-top: 2cm;
-  margin-bottom: 1.5cm;
 }
 
 #divQuantity {
@@ -559,7 +619,7 @@ export default {
   min-width: 50%;
   margin: auto;
   text-align: center;
-  margin-top: 4%;
+  margin-top: 1%;
   margin-bottom: 5%;
   /* background-color: #1b1b1b; */
   padding: 5%;
@@ -618,6 +678,17 @@ input[type="date"]:hover {
   font-size: 2.6em;
   margin-bottom: 2%;
   margin-top: 2%;
+}
+
+.plot{
+  margin-top: 30px;
+  width: 72%;
+  margin: auto;
+}
+
+#chart {
+  margin-top: 10%;
+  margin-bottom: 5%;
 }
 
 /* make #titleApp span disapear on small screen */

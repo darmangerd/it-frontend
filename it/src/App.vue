@@ -47,7 +47,7 @@ export default {
       <div id="nav">
         <v-btn color="black" id="homeBtn" class="btn-css"  to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
         <v-btn color="black" to="/food" class="mx-4 btn-css"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
-        <v-btn color="black" to="/history" class="btn-css"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
+        <v-btn color="black" class="btn-css"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
       </div>
     </div>
     <router-view></router-view>

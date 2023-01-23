@@ -1,12 +1,12 @@
 
 <script lang="ts">
 
-
 export default {
         data: () => ({
           hasToken: !!localStorage.getItem('token'),
           username: localStorage.getItem('username'),
           theme: 'light',
+          confirmationDialog: false,
         }),
         created() {
           // reload everythime a page is loaded
@@ -17,17 +17,19 @@ export default {
           });
         },
         methods: {
+          // confirm logout
           async logout() {
-            // confirm logout
-            const confirm = window.confirm('Are you sure you want to logout?');
-            if (confirm) {
-              localStorage.removeItem('token');
-              localStorage.removeItem('username');
-              localStorage.removeItem('user_id');
-              this.hasToken = false;
-              this.$router.push('/');
-            }
+            this.confirmationDialog = true;
           },
+          logoutConfirmed() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            localStorage.removeItem('user_id');
+            this.hasToken = false;
+            this.$router.push('/');
+          }, 
+
+          // change theme color
           toggleTheme() {
             this.theme = this.theme === 'light' ? 'dark' : 'light';
           }
@@ -38,17 +40,24 @@ export default {
 <template>
   <v-app :theme="theme">
     <div v-if="hasToken" >
-      <div class="fixed-top">
-        <v-btn @click="logout" id="btnLogout" class="ma-4" color="black" dark>
-          <v-icon icon="mdi-logout"></v-icon>
-        </v-btn>
-      </div>
       <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
       <div id="nav">
         <v-btn color="black" id="homeBtn" class="btn-css"  to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
         <v-btn color="black" to="/food" class="mx-4 btn-css"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
-        <v-btn color="black" class="btn-css"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
+        <v-btn @click="logout" class="btn-css" color="black" dark>
+          <v-icon icon="mdi-logout" class="pr-3"></v-icon> Logout
+        </v-btn>
       </div>
+      <v-dialog v-model="confirmationDialog" max-width="290">
+        <v-card>
+          <v-card-title class="headline">Confirmation</v-card-title>
+          <v-card-text>Are you sure you want to logout?</v-card-text>
+          <v-card-actions>
+            <v-btn color="green darken-1" text @click="confirmationDialog = false">Cancel</v-btn>
+            <v-btn color="red darken-1" text @click="logoutConfirmed()">Logout</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
     <router-view></router-view>
     <v-btn v-if="hasToken" class="mx-auto my-8" icon="mdi-calendar" @click="toggleTheme"></v-btn>
@@ -97,30 +106,10 @@ export default {
 }
 
 
-#btnLogout {
-  border-radius: 100%;
-  height: 60px;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-
-@media only screen and (max-width: 870px) {
-  #titleApp {
-    font-size: 1.5em;
-  }
-}
 /* make #titleApp span disapear on phone screen */
 @media only screen and (max-width: 500px) {
   #titleApp {
-    color : transparent;    
-  }
-  #titleApp span {
-    font-size: 0.9em;
-    /* color : transparent; 
-    color: linear-gradient(transparent, transparent);
-    background: -webkit-linear-gradient(transparent, transparent); */
+    font-size: 1.5em;    
   }
 }
 

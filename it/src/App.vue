@@ -6,6 +6,7 @@ export default {
         data: () => ({
           hasToken: !!localStorage.getItem('token'),
           username: localStorage.getItem('username'),
+          theme: 'light',
         }),
         created() {
           // reload everythime a page is loaded
@@ -26,13 +27,16 @@ export default {
               this.hasToken = false;
               this.$router.push('/');
             }
+          },
+          toggleTheme() {
+            this.theme = this.theme === 'light' ? 'dark' : 'light';
           }
         }
     }
 </script>
 
 <template>
-  <v-app>
+  <v-app :theme="theme">
     <div v-if="hasToken" >
       <div class="fixed-top">
         <v-btn @click="logout" id="btnLogout" class="ma-4" color="black" dark>
@@ -41,14 +45,13 @@ export default {
       </div>
       <h3 id="titleApp">Hello <span>{{ username }}</span>  :)</h3>
       <div id="nav">
-        <v-btn color="black" id="homeBtn" to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
-        <v-btn color="black" to="/food" class="mx-4"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
-        <v-btn color="black" to="/history"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
+        <v-btn color="black" id="homeBtn" class="btn-css"  to="/main"><v-icon class="pr-3" icon="mdi-home"></v-icon>Home</v-btn>
+        <v-btn color="black" to="/food" class="mx-4 btn-css"><v-icon class="pr-3" icon="mdi-food"></v-icon>Add food</v-btn>
+        <v-btn color="black" to="/history" class="btn-css"><v-icon class="pr-3" icon="mdi-calendar"></v-icon> History</v-btn>
       </div>
     </div>
-
-    
     <router-view></router-view>
+    <v-btn v-if="hasToken" class="mx-auto my-8" icon="mdi-calendar" @click="toggleTheme"></v-btn>
   </v-app>
 </template>
 
@@ -77,21 +80,22 @@ export default {
   margin: 0 auto;
 }
 
-.v-btn {
+.btn-css {
   font-weight: bolder;
   color: white;
   transition: all 0.3s ease;
 }
 
-.v-btn:hover {
+.btn-css:hover {
   background-color: #2c3e50;
   transform: scale(1.07)
 }
 
-.v-btn:active {
+.btn-css:active {
   background-color: #0376e8;
   transform: scale(1.07)
 }
+
 
 #btnLogout {
   border-radius: 100%;

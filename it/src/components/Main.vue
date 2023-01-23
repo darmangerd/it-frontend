@@ -452,11 +452,11 @@ export default {
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-alert v-if="errorEditAlert" type="error" :value="true">
+    <v-alert class="mx-auto" v-if="errorEditAlert" type="error" :value="true" width="70%">
         Please enter a valid quantity.
         Must be a number between 1 and 99999.
     </v-alert>
-    <v-table id="table" fixed-header height="300px" theme="dark" :items="dataTable">
+    <v-table id="table" fixed-header height="300px" :items="dataTable">
       <thead>
         <tr>
           <th class="text-left">Name</th>
@@ -561,7 +561,7 @@ export default {
   text-align: center;
   margin-top: 4%;
   margin-bottom: 5%;
-  background-color: #1b1b1b;
+  /* background-color: #1b1b1b; */
   padding: 5%;
 }
 
@@ -582,7 +582,7 @@ export default {
 input[type="date"] {
     padding: 0.5rem;
     border-radius: 4px;
-    background-color: #1b1b1b;
+    background-color: #1e1e1e;
     transition: all 0.6s ease;
     color: white;
     font-weight: bolder;
@@ -596,6 +596,8 @@ input[type="date"]:hover {
   width: 85%;
   min-width: 50%;
   margin: auto;
+  /* border: #1e1e1e 2px solid; */
+  border-radius: 3px;
 }
 
 #calorie {

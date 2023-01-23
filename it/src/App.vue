@@ -1,12 +1,12 @@
-
 <script lang="ts">
 
 export default {
         data: () => ({
+          confirmationDialog: false,
           hasToken: !!localStorage.getItem('token'),
           username: localStorage.getItem('username'),
           theme: 'light',
-          confirmationDialog: false,
+          
         }),
         created() {
           // reload everythime a page is loaded
@@ -15,13 +15,15 @@ export default {
             this.hasToken = !!localStorage.getItem('token');
             this.username = localStorage.getItem('username');
           });
+          this.confirmationDialog = false;
         },
         methods: {
           // confirm logout
-          async logout() {
+          logout() {
             this.confirmationDialog = true;
           },
           logoutConfirmed() {
+            this.confirmationDialog = false;
             localStorage.removeItem('token');
             localStorage.removeItem('username');
             localStorage.removeItem('user_id');
@@ -48,16 +50,18 @@ export default {
           <v-icon icon="mdi-logout" class="pr-3"></v-icon> Logout
         </v-btn>
       </div>
+    </div>
+    <div>
       <v-dialog v-model="confirmationDialog" max-width="290">
-        <v-card>
-          <v-card-title class="headline">Confirmation</v-card-title>
-          <v-card-text>Are you sure you want to logout?</v-card-text>
-          <v-card-actions>
-            <v-btn color="green darken-1" text @click="confirmationDialog = false">Cancel</v-btn>
-            <v-btn color="red darken-1" text @click="logoutConfirmed()">Logout</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+          <v-card>
+            <v-card-title class="headline">Confirmation</v-card-title>
+            <v-card-text>Are you sure you want to logout?</v-card-text>
+            <v-card-actions>
+              <v-btn color="green darken-1" text @click="confirmationDialog = false">Cancel</v-btn>
+              <v-btn color="red darken-1" text @click="logoutConfirmed()">Logout</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
     </div>
     <router-view></router-view>
     <v-btn v-if="hasToken" class="mx-auto my-8" icon="mdi-calendar" @click="toggleTheme"></v-btn>

@@ -2,7 +2,6 @@
 import axios from 'axios';
 import Chart from 'chart.js/auto';
 
-
 export default {
   data() {
     return {
@@ -89,6 +88,7 @@ export default {
             date: this.date,
           }
         })
+        // if there is no meal for today
         if (response.data.length == 0) {
           this.hasNoMeal = true
         } else {
@@ -114,18 +114,19 @@ export default {
             id_meal: this.meal_id,
           }
         })
+        // get food id and quantity information
         for (let i = 0; i < response.data.length; i++) {
           this.food_id.push(response.data[i].id_food)
           this.quantity.push(response.data[i].gram)
           this.quantityId.push(response.data[i].id)       
         }
+        // if there no food for today -> delete meal
         if (this.food_id.length == 0) {
           this.hasNoMeal = true
           await this.deleteMeal()
         } else {
           this.hasNoMeal = false
         }
-
         // get food by id
         this.getFoodById()
         } 
@@ -143,6 +144,7 @@ export default {
             'Authorization': `Token ${token}`,
           },
         })
+        // get food name and id
         for (let i = 0; i < response.data.length; i++) {
           this.allFoodsData.push({
             name: response.data[i].name,
@@ -167,6 +169,7 @@ export default {
             id_user: this.userId,
           }
         })
+        // save client information
         this.client = response.data[0]
       } catch (error) {
         // further error handling here -> next release
@@ -175,6 +178,7 @@ export default {
     },
     
     calculateBMR() {
+      // used to calculate calories left for the day adapted for the userå
       // ref : https://www.calculator.net/bmr-calculator.html
       return 10 * this.client.weight_kg + 6.25 * this.client.height_cm
     },
@@ -190,6 +194,7 @@ export default {
             'Authorization': `Token ${token}`,
           },
         });
+        // return the id of the meal created
         return response.data.id
       } catch (error) {
         // further error handling here -> next release
@@ -198,6 +203,7 @@ export default {
     },
 
     async addFood() {
+      // if there is no meal for today -> create one
       if (this.hasNoMeal) {
         this.meal_id = await this.createMeal()
         this.hasNoMeal = false
@@ -222,6 +228,7 @@ export default {
           'Authorization': `Token ${token}`,
         },
       });
+
       if (!this.hasNoMeal){
         // deactivate add button for security purposes
         // for 3 seconds -> not to add the same food twice
@@ -229,7 +236,6 @@ export default {
         setTimeout(() => {
           this.valid = true
         }, 3000)
-
         
         // clear the table
         this.clearTable()
@@ -261,6 +267,7 @@ export default {
                 id: this.food_id[i],
             }
             })
+            // save the food in an array
             this.food.push(response.data[0])
             }
             // create a new object that contains the food and the quantity and calories per 100g
@@ -276,6 +283,7 @@ export default {
                 carbs: food.carbohydrates_g,
               }
             })
+            // calculate the total calories, protein, fat and carbs
             this.summary()
         } 
         catch (error) {
@@ -285,13 +293,15 @@ export default {
     },
 
     async summary() {
+        // calculate the total calories, protein, fat and carbs for the day and calories left
         for (let i = 0; i < this.foodItems.length; i++) {
-            this.totalCalories += Math.round(this.foodItems[i].calories * this.foodItems[i].quantity / 100)
-            this.totalProtein += Math.round(this.foodItems[i].protein * this.foodItems[i].quantity / 100)
-            this.totalFat += Math.round(this.foodItems[i].fat * this.foodItems[i].quantity / 100)
-            this.totalCarbs += Math.round(this.foodItems[i].carbs * this.foodItems[i].quantity / 100)
+          this.totalCalories += Math.round(this.foodItems[i].calories * this.foodItems[i].quantity / 100)
+          this.totalProtein += Math.round(this.foodItems[i].protein * this.foodItems[i].quantity / 100)
+          this.totalFat += Math.round(this.foodItems[i].fat * this.foodItems[i].quantity / 100)
+          this.totalCarbs += Math.round(this.foodItems[i].carbs * this.foodItems[i].quantity / 100)
         }
         this.caloriesLeft = this.calculateBMR() - this.totalCalories
+        // if the user has no calories left switch the color of the calories left
         if (this.caloriesLeft < 0) {
           this.hasCaloriesLeft = false
         }
@@ -300,7 +310,7 @@ export default {
         }
     },
 
-    async clearTable() {
+    async clearTable() {      
       this.foodItems = []
       this.dataTable = []
       this.food = []
@@ -316,11 +326,14 @@ export default {
     },
 
     async dateChanged() {
+      // if date is changed -> clear the table and get the meal for the new date
       this.clearTable()
       const date = this.$refs.dateInput.value;
       this.date = new Date(date).toISOString().slice(0, 10);
       this.getMealByDateAndUser()
     },
+
+    // dialog for deleting food
     openConfirmationDialog(itemId) {
        this.confirmationDialog = true;
        this.selectedId = itemId;
@@ -330,8 +343,8 @@ export default {
        this.deleteFood(itemId);
    },
 
-   // delete food from the database
     async deleteFood(itemId) {
+      // delete food quantity from the database
       this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
       const token = localStorage.getItem('token')
       try {
@@ -342,7 +355,8 @@ export default {
             })
             // clear the table
             this.clearTable()
-            // add elements to the table
+            // add changed elements to the table
+            // if there is no food left it automatically deletes the meal
             this.getMealByDateAndUser()
             // plot the graph
             this.createChart()
@@ -353,6 +367,7 @@ export default {
     },
     
     async deleteMeal(){
+      // delete meal from the database
       this.mealToDelete = this.meal_id
       const token = localStorage.getItem('token')
       try {
@@ -373,6 +388,9 @@ export default {
     },
 
     async updateQuantity(id, quantity) {
+      // update the quantity of the food in the database
+
+      // quantity must be between 1 and 99999 and a number
       if (quantity < 1 || quantity > 99999 || quantity == null  || isNaN(quantity)) {
         // show alert
         this.errorEditAlert = true
@@ -382,6 +400,7 @@ export default {
       }
       else
       {
+        // get the quantity id
         const quantityId = this.foodItems.find(x => x.id === id).quantityId
 
         const token = localStorage.getItem('token')
@@ -402,8 +421,8 @@ export default {
       }
     },
 
-    // get food count for plot
     async getFoodCount() {
+      // get food count for plot
       const token = localStorage.getItem('token')
       try {
         const response = await axios.get('foodcount?id_user='+this.userId, {
@@ -411,6 +430,7 @@ export default {
             'Authorization': `Token ${token}`,
           },
         })
+        // save the counts in the foodCount array
         this.foodCount = response.data
         } 
         catch (error) 
@@ -423,14 +443,16 @@ export default {
     async createChart() {
             await this.getFoodCount()
 
-            // on récupère les noms des aliments
+            // get the names of the foods
             const foods = this.foodCount.map((food) => food.name);
-            // on récupère les nombres d'aliments
+            // get the counts of the foods
             const counts = this.foodCount.map((food) => food.count);
 
             // on crée le graphe
             const ctx = document.getElementById('chart');
 
+            // if the chart already exists -> destroy it and create a new one
+            // necessary for the plot to update
             if (this.chart) {
                 this.chart.destroy();
             }
@@ -458,7 +480,7 @@ export default {
         }
       },
     mounted() {
-        this.createChart()
+      this.createChart()
     },
 }
 </script>
@@ -628,6 +650,7 @@ input[type="date"] {
     color: white;
     font-weight: bolder;
 }
+
 input[type="date"]:hover {
     cursor: pointer;
     scale: 1.04;

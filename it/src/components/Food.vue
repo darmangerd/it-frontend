@@ -44,6 +44,7 @@ export default {
       ],
     }
     },
+
     methods: {
         async createFood() {
             const token = localStorage.getItem('token')
@@ -60,14 +61,15 @@ export default {
                 }, 3000)
                 
             } catch (error) {
-                if (error.response.data.name == "food with this name already exists.") {
-                    this.errorAlert = true
-                    setTimeout(() => {
-                    this.errorAlert = false
-                    }, 3000)
-                }
-                // further error handling here -> next release
-                console.error(error.response)
+              // if error is that food already exists show error alert
+              if (error.response.data.name == "food with this name already exists.") {
+                  this.errorAlert = true
+                  setTimeout(() => {
+                  this.errorAlert = false
+                  }, 3000)
+              }
+              // further error handling here -> next release
+              console.error(error.response)
             }
         },
 

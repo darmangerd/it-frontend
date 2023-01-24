@@ -3,75 +3,74 @@ import axios from 'axios'
 import { mapState, mapWritableState } from 'pinia'
 import { useRegisterStore } from '../store'
 
-    export default {
-        data: () => ({
-        form: false,
-        username: "",
-        password: null,
-        loading: false,
-        weight: 40,
-        height: 100,
-        selectedOption: 'm',
-        error: false,
-        id : null,
-        usernameRules: [
-          v => !!v || 'Username is required',
-          v => v.length >= 3 || 'Username must be at least 3 characters',
-          v => v.length <= 12 || 'Username must be less than 12 characters',
-          //only letters and numbers
-          v => /^[a-zA-Z0-9]+$/.test (v) || 'Username must contain only letters and numbers',
-        ],
-        passRules: [
-          v => !!v || 'Pass is required',
-          v => v.length >= 6 || 'Pass must be at least 6 characters',
-          v => v.length <= 30 || 'Pass must be less than 30 characters',
-        ],
-        }),
+  export default {
+      data: () => ({
+      form: false,
+      username: "",
+      password: null,
+      loading: false,
+      weight: 40,
+      height: 100,
+      selectedOption: 'm',
+      error: false,
+      id : null,
+      usernameRules: [
+        v => !!v || 'Username is required',
+        v => v.length >= 3 || 'Username must be at least 3 characters',
+        v => v.length <= 12 || 'Username must be less than 12 characters',
+        //only letters and numbers
+        v => /^[a-zA-Z0-9]+$/.test (v) || 'Username must contain only letters and numbers',
+      ],
+      passRules: [
+        v => !!v || 'Pass is required',
+        v => v.length >= 6 || 'Pass must be at least 6 characters',
+        v => v.length <= 30 || 'Pass must be less than 30 characters',
+      ],
+      }),
 
+      created() {
         // redirect if user is still logged in
-        created() {
         if (localStorage.getItem('token')) {
             this.$router.push('/main')
         }
-        },
+      },
 
-        computed: {
-        ...mapWritableState(useRegisterStore, ["hasRegister"]),
-        },
+      computed: {
+      ...mapWritableState(useRegisterStore, ["hasRegister"]),
+      },
 
-        methods: {
-        async register() {
-          try {
-            // register user
-            const response = await axios.post(axios.defaults.baseURL + 'users/', {
-              username: this.username,
-              password: this.password
-            })
+      methods: {
+      async register() {
+        try {
+          // register user
+          const response = await axios.post(axios.defaults.baseURL + 'users/', {
+            username: this.username,
+            password: this.password
+          })
+          this.id = response.data.id
 
-            // register client
-            this.id = response.data.id
-
-            const response2 = await axios.post(axios.defaults.baseURL + 'client/', {
-              id_user: this.id,
-              weight_kg: this.weight,
-              height_cm: this.height,
-              gender: this.selectedOption
-            })
-            // update hasRegister to true
-            this.hasRegister = true
-            // redirect to login
-            this.$router.push({ path: '/' })
-          } 
-          catch (error) 
-          {
-            this.error = true
-            setTimeout(() => {
-              this.error = false
-            }, 3000)
-          }
-        },
-        },
-    }
+          // register client
+          const response2 = await axios.post(axios.defaults.baseURL + 'client/', {
+            id_user: this.id,
+            weight_kg: this.weight,
+            height_cm: this.height,
+            gender: this.selectedOption
+          })
+          // redirect to login and set register message to show
+          this.hasRegister = true
+          this.$router.push({ path: '/' })
+        } 
+        catch (error) 
+        {
+          // show error message
+          this.error = true
+          setTimeout(() => {
+            this.error = false
+          }, 3000)
+        }
+      },
+    },
+  }
 </script>
 
 <template>
@@ -96,7 +95,7 @@ import { useRegisterStore } from '../store'
       <div class="text-caption">Height {{ height }} cm</div>
       <v-slider v-model="height" :min="100" :max="230" step="10" 
       :thumb-size="15" color="rgb(66, 199, 140)" show-ticks="always"></v-slider>
-
+      
       <div class="text-caption">Gender</div>
       <v-radio-group v-model="selectedOption">
           <v-radio label="men" value="m"></v-radio>
@@ -106,7 +105,6 @@ import { useRegisterStore } from '../store'
       <div id="formButtons">
         <v-btn class="mx-2" id="btnSecondary" depressed
         large to="/">Login</v-btn>
-      
         <v-btn type="submit" :disabled="!form" :loading="loading"  
         id="btnPrimary" depressed large>Register</v-btn>
       </div>
@@ -114,8 +112,6 @@ import { useRegisterStore } from '../store'
       User already exists please use another username
       </v-alert>
     </v-form>
-
-    
   </v-responsive>
 </template>
 <style scoped>

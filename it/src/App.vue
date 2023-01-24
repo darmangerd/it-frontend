@@ -22,6 +22,7 @@ export default {
           logout() {
             this.confirmationDialog = true;
           },
+          // logout
           logoutConfirmed() {
             this.confirmationDialog = false;
             localStorage.removeItem('token');
@@ -30,7 +31,6 @@ export default {
             this.hasToken = false;
             this.$router.push('/');
           }, 
-
           // change theme color
           toggleTheme() {
             this.theme = this.theme === 'light' ? 'dark' : 'light';
@@ -74,8 +74,8 @@ export default {
     margin-top: 1.5cm;
     font-size: 3em;
     margin-bottom: 1.3cm;
-
 }
+
 #titleApp span {
     color: rgb(66,246,118);
     color: linear-gradient(90deg, rgba(66,246,118,1) 0%, rgba(97,245,219,1) 50%, rgba(0,188,255,1) 100%);
@@ -109,14 +109,12 @@ export default {
   transform: scale(1.07)
 }
 
-
 /* make #titleApp disapear on phone screen */
 @media only screen and (max-width: 500px) {
   #titleApp {
     font-size: 1.5em;    
   }
 }
-
 
 </style>
 

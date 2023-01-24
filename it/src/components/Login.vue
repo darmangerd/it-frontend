@@ -18,11 +18,12 @@ import { mapWritableState } from 'pinia'
           ...mapWritableState(useRegisterStore, ["hasRegister"]), 
         },
 
-        // redirect if user is still logged in
         created() {
+          // redirect if user is still logged in
           if (localStorage.getItem('token')) {
               this.$router.push('/main')
           }
+          // show register message if user has registered
           if (this.hasRegister) {
             this.register = true
             setTimeout(() => {
@@ -33,26 +34,31 @@ import { mapWritableState } from 'pinia'
         },
 
         methods: {
+          required (v: any) {
+              return !!v || 'Field is required'
+          },
+
           async login() {
           try {
             const response = await axios.post('http://127.0.0.1:8000/auth/login/', {
               username: this.username,
               password: this.password
             })
+            // save token and username in local storage
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('username', this.username)
+            // get user id from backend
             await this.getUserIdByUsername()
             this.$router.push('/main')
           } catch (error) {
+            // show error message
             this.error = true
             setTimeout(() => {
               this.error = false
             }, 3000)
           }
         },
-        required (v: any) {
-            return !!v || 'Field is required'
-        },
+
         async getUserIdByUsername() {
         const token = localStorage.getItem('token')
         try {
@@ -64,15 +70,15 @@ import { mapWritableState } from 'pinia'
               username: this.username
             }
           })
-          // save id from user
+          // save id from user in local storage
           localStorage.setItem('user_id', response.data[0].id)
         } catch (error) {
           // further error handling here -> next release
           console.error(error);
         }
       },
-        },
-    }
+    },
+  }
 
 </script>
 
@@ -115,6 +121,7 @@ import { mapWritableState } from 'pinia'
     font-size: 4em;
     margin-bottom: 10%;
 }
+
 #title span {
     color: rgb(66,246,118);
     color: linear-gradient(90deg, rgba(66,246,118,1) 0%, rgba(97,245,219,1) 50%, rgba(0,188,255,1) 100%);
@@ -122,7 +129,6 @@ import { mapWritableState } from 'pinia'
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-
 
 #btnPrimary {
   color: white;
@@ -153,4 +159,5 @@ import { mapWritableState } from 'pinia'
   margin-top: 2%;
   margin-bottom: 5%;
 }
+
 </style>

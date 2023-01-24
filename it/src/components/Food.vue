@@ -54,13 +54,11 @@ export default {
                     }
                 })
                 this.clearForm()
-                //console.log(response.data.name)
                 this.successAlert = true
                 setTimeout(() => {
                     this.successAlert = false
                 }, 3000)
                 
-                //this.$router.push({ name: 'Food' })
             } catch (error) {
                 if (error.response.data.name == "food with this name already exists.") {
                     this.errorAlert = true
@@ -68,6 +66,7 @@ export default {
                     this.errorAlert = false
                     }, 3000)
                 }
+                // further error handling here -> next release
                 console.error(error.response)
             }
         },
@@ -77,7 +76,6 @@ export default {
         },
     },
 }
-
 </script>
 
 <template>

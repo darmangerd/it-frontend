@@ -59,7 +59,6 @@ import { useRegisterStore } from '../store'
             })
             // update hasRegister to true
             this.hasRegister = true
-            console.log("hasRegister: ", this.hasRegister)
             // redirect to login
             this.$router.push({ path: '/' })
           } 

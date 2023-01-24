@@ -78,8 +78,6 @@ export default {
 
   methods: {
     async getMealByDateAndUser() {
-      console.log("date: ", this.date)
-      console.log("user_id: ", this.userId)
       const token = localStorage.getItem('token')
       try {
         const response = await axios.get(axios.defaults.baseURL + 'meal/', {
@@ -87,25 +85,21 @@ export default {
             'Authorization': `Token ${token}`,
           },
           params: {
-            //id: localStorage.getItem('user_id')
             id_user: this.userId,
-            //date : "2022-11-03",
             date: this.date,
           }
         })
-        // console.log("date: ", this.date)
-        console.log("all meals: ", response.data)
         if (response.data.length == 0) {
           this.hasNoMeal = true
         } else {
           this.hasNoMeal = false
           this.meal_id = response.data[0].id
-          console.log("meal_id: ", this.meal_id)
           // get quantity by meal from today
           this.getQuantityByMeal()
         }
         } catch (error) {
-        console.error(error)
+          // further error handling here -> next release
+          console.error(error);
         }
     },
 
@@ -120,14 +114,11 @@ export default {
             id_meal: this.meal_id,
           }
         })
-        console.log("quantity: ", response.data)
         for (let i = 0; i < response.data.length; i++) {
           this.food_id.push(response.data[i].id_food)
           this.quantity.push(response.data[i].gram)
           this.quantityId.push(response.data[i].id)       
         }
-        console.log("quantity HERE" , this.quantity)
-        console.log("quantityId HERE" , this.quantityId)
         if (this.food_id.length == 0) {
           this.hasNoMeal = true
           await this.deleteMeal()
@@ -135,11 +126,12 @@ export default {
           this.hasNoMeal = false
         }
 
-        // console.log("food_id: " + this.food_id)
         // get food by id
         this.getFoodById()
-        } catch (error) {
-        console.error(error)
+        } 
+        catch (error) {
+          // further error handling here -> next release
+          console.error(error)
         }
     },
 
@@ -159,6 +151,7 @@ export default {
           this.allFoods.push(response.data[i].name)
         }
       } catch (error) {
+        // further error handling here -> next release
         console.error(error);
       }
     },
@@ -174,10 +167,9 @@ export default {
             id_user: this.userId,
           }
         })
-        console.log("client: ", response.data)
         this.client = response.data[0]
-        console.log("client: ", this.client)
       } catch (error) {
+        // further error handling here -> next release
         console.error(error)
       }
     },
@@ -198,21 +190,17 @@ export default {
             'Authorization': `Token ${token}`,
           },
         });
-        console.log("meal_idCREATE: ", response.data.id)
         return response.data.id
       } catch (error) {
+        // further error handling here -> next release
         console.error(error.response)
       }
     },
 
     async addFood() {
-      console.log("add food")
-      console.log("meal_id: ", this.meal_id)
-      console.log("date: ", this.date)
       if (this.hasNoMeal) {
         this.meal_id = await this.createMeal()
         this.hasNoMeal = false
-        console.log("meal_id_ADDFOOD: ", this.meal_id)
       }
 
       // get the id of the selected food
@@ -221,9 +209,6 @@ export default {
           this.selectedFoodId = this.allFoodsData[i].id
         }
       }
-      // console.log(`Selected food id: ${this.selectedFoodId}`)
-      // console.log(`Quantity: ${this.quantityInput}`)
-      // console.log("meal_idFINAL: ", this.meal_id)
 
       // add quantity to the database
       const token = localStorage.getItem('token')
@@ -259,6 +244,7 @@ export default {
               this.successAlert = false
           }, 3000)            
       } catch (error) {
+        // further error handling here -> next release
           console.error(error.response)
       }
     },
@@ -291,9 +277,10 @@ export default {
               }
             })
             this.summary()
-            console.log("all food : ", this.foodItems)
-        } catch (error) {
-        console.error(error)
+        } 
+        catch (error) {
+          // further error handling here -> next release
+          console.error(error)
         }
     },
 
@@ -346,7 +333,6 @@ export default {
    // delete food from the database
     async deleteFood(itemId) {
       this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
-      console.log("quantityToDelete: ", this.quantityToDelete)
       const token = localStorage.getItem('token')
       try {
         const response = await axios.delete(axios.defaults.baseURL + 'quantity/' + this.quantityToDelete, {
@@ -361,10 +347,9 @@ export default {
             // plot the graph
             this.createChart()
       } catch (error) {
+        // further error handling here -> next release
         console.error(error)
       }
-      console.log("delete food id: ", itemId)
-      console.log("meal_id: ", this.meal_id)
     },
     
     async deleteMeal(){
@@ -382,6 +367,7 @@ export default {
               this.hasNoMeal = true
             }
       } catch (error) {
+        // further error handling here -> next release
         console.error(error)
       }
     },
@@ -396,11 +382,7 @@ export default {
       }
       else
       {
-        console.log("id: ", id)
-        console.log("quantity: ", quantity)
-        console.log("meal_id: ", this.meal_id)
         const quantityId = this.foodItems.find(x => x.id === id).quantityId
-        console.log("quantityId: ", quantityId)
 
         const token = localStorage.getItem('token')
         try {
@@ -413,8 +395,8 @@ export default {
                     'Authorization': `Token ${token}`,
                 }
             })
-            console.log(response.data)
         } catch (error) {
+            // further error handling here -> next release
             console.error(error)
         }
       }
@@ -430,10 +412,11 @@ export default {
           },
         })
         this.foodCount = response.data
-        console.log("foodCount: ", this.foodCount)
-
-        } catch (error) {
-        console.error(error)
+        } 
+        catch (error) 
+        {
+          // further error handling here -> next release
+          console.error(error)
         }
     },
 
@@ -477,7 +460,6 @@ export default {
     mounted() {
         this.createChart()
     },
-
 }
 </script>
 
@@ -621,7 +603,6 @@ export default {
   text-align: center;
   margin-top: 1%;
   margin-bottom: 5%;
-  /* background-color: #1b1b1b; */
   padding: 5%;
 }
 
@@ -656,7 +637,6 @@ input[type="date"]:hover {
   width: 85%;
   min-width: 50%;
   margin: auto;
-  /* border: #1e1e1e 2px solid; */
   border-radius: 3px;
 }
 
@@ -691,19 +671,16 @@ input[type="date"]:hover {
   margin-bottom: 5%;
 }
 
-/* make #titleApp span disapear on small screen */
 @media only screen and (max-width: 600px) {
   .hide {
     display: none;
   }
 }
 
-/* make #titleApp span disapear on small screen */
 @media only screen and (max-width: 400px) {
   .hide-small {
     display: none;
   }
 }
-
 
 </style>

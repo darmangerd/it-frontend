@@ -110,7 +110,7 @@ export default {
 }
 
 
-/* make #titleApp span disapear on phone screen */
+/* make #titleApp disapear on phone screen */
 @media only screen and (max-width: 500px) {
   #titleApp {
     font-size: 1.5em;    

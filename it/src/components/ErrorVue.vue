@@ -1,10 +1,3 @@
-<script lang="ts">
-</script>
-
-
 <template>
-  <h1>Error 404 :(</h1>
+  <h1 class="my-15 mx-auto">Error 404 :(</h1>
 </template>
-<style scoped>
-
-</style>

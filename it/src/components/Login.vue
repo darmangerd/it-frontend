@@ -23,7 +23,6 @@ import { mapWritableState } from 'pinia'
           if (localStorage.getItem('token')) {
               this.$router.push('/main')
           }
-          console.log("hasRegister: ", this.hasRegister)
           if (this.hasRegister) {
             this.register = true
             setTimeout(() => {
@@ -43,11 +42,6 @@ import { mapWritableState } from 'pinia'
             localStorage.setItem('token', response.data.token)
             localStorage.setItem('username', this.username)
             await this.getUserIdByUsername()
-            // localStorage.setItem('user_id', this.userId)
-            // console.log("user_id: ", this.userId)
-            console.log(localStorage.getItem('token'))
-            console.log(localStorage.getItem('username'))
-            console.log(localStorage.getItem('user_id'))
             this.$router.push('/main')
           } catch (error) {
             this.error = true
@@ -61,7 +55,6 @@ import { mapWritableState } from 'pinia'
         },
         async getUserIdByUsername() {
         const token = localStorage.getItem('token')
-        console.log("token: ", token)
         try {
           const response = await axios.get('/users/', {
             headers: {
@@ -71,18 +64,10 @@ import { mapWritableState } from 'pinia'
               username: this.username
             }
           })
-
+          // save id from user
           localStorage.setItem('user_id', response.data[0].id)
-
-          // localStorage.setItem('user_id', response.data[0].id)
-
-          // if (response.data.length > 0) {
-          //   console.log(response.data[0].id);
-          //   // Return the first user's ID if multiple users have the same username
-          //   return response.data[0].id;
-          // }
-          // return null;
         } catch (error) {
+          // further error handling here -> next release
           console.error(error);
         }
       },

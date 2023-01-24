@@ -84,11 +84,11 @@ import { mapWritableState } from 'pinia'
 
 <template>
   <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
-  <v-alert v-if="register" type="info" :value="true">
+  <v-alert class="mx-auto" v-if="register" width="70%" type="info" :value="true">
       Register completed successfully! Please login.
   </v-alert>
 
-  <v-responsive class="mx-auto px-5" max-width="450">
+  <v-responsive class="mx-auto px-5" max-width="300">
     <h2 id="formIcon"><v-icon icon="mdi-account"></v-icon></h2>
 
     <v-form v-model="form" @submit.prevent="login">

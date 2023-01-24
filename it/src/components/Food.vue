@@ -49,7 +49,7 @@ export default {
         async createFood() {
             const token = localStorage.getItem('token')
             try {
-                const response = await axios.post(axios.defaults.baseURL + 'food/', this.food, {
+                const response = await axios.post('food/', this.food, {
                     headers: {
                         'Authorization': `Token ${token}`,
                     }

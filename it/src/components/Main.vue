@@ -79,7 +79,7 @@ export default {
     async getMealByDateAndUser() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get(axios.defaults.baseURL + 'meal/', {
+        const response = await axios.get('meal/', {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -106,7 +106,7 @@ export default {
     async getQuantityByMeal() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get(axios.defaults.baseURL + 'quantity/', {
+        const response = await axios.get('quantity/', {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -139,7 +139,7 @@ export default {
     async getFoods() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get(axios.defaults.baseURL + 'food/', {
+        const response = await axios.get('food/', {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -161,7 +161,7 @@ export default {
     async getClient() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.get(axios.defaults.baseURL + 'client/', {
+        const response = await axios.get('client/', {
           headers: {
             'Authorization': `Token ${token}`,
           },
@@ -186,7 +186,7 @@ export default {
     async createMeal() {
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.post(axios.defaults.baseURL + 'meal/', {
+        const response = await axios.post('meal/', {
           id_user: this.userId,
           date: this.date,
         }, {
@@ -219,7 +219,7 @@ export default {
       // add quantity to the database
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.post(axios.defaults.baseURL + 'quantity/', {
+        const response = await axios.post('quantity/', {
         gram: this.quantityInput,
         id_food: this.selectedFoodId,
         id_meal: this.meal_id,
@@ -259,7 +259,7 @@ export default {
       const token = localStorage.getItem('token')
       try {
         for (let i = 0; i < this.food_id.length; i++) {
-          const response = await axios.get(axios.defaults.baseURL + 'food/', {
+          const response = await axios.get('food/', {
             headers: {
                 'Authorization': `Token ${token}`,
             },
@@ -348,7 +348,7 @@ export default {
       this.quantityToDelete = this.foodItems.find(x => x.id === itemId).quantityId
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.delete(axios.defaults.baseURL + 'quantity/' + this.quantityToDelete, {
+        const response = await axios.delete('quantity/' + this.quantityToDelete, {
         headers: {
                 'Authorization': `Token ${token}`,
             },
@@ -371,7 +371,7 @@ export default {
       this.mealToDelete = this.meal_id
       const token = localStorage.getItem('token')
       try {
-        const response = await axios.delete(axios.defaults.baseURL + 'meal/' + this.meal_id, {
+        const response = await axios.delete('meal/' + this.meal_id, {
         headers: {
                 'Authorization': `Token ${token}`,
             },
@@ -405,7 +405,7 @@ export default {
 
         const token = localStorage.getItem('token')
         try {
-            const response = await axios.patch(axios.defaults.baseURL + 'quantity/' + quantityId +'/', {
+            const response = await axios.patch('quantity/' + quantityId +'/', {
                 gram: quantity,
                 id_food: id,
                 id_meal: this.meal_id,

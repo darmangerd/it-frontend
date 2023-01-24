@@ -43,14 +43,14 @@ import { useRegisterStore } from '../store'
       async register() {
         try {
           // register user
-          const response = await axios.post(axios.defaults.baseURL + 'users/', {
+          const response = await axios.post('users/', {
             username: this.username,
             password: this.password
           })
           this.id = response.data.id
 
           // register client
-          const response2 = await axios.post(axios.defaults.baseURL + 'client/', {
+          const response2 = await axios.post('client/', {
             id_user: this.id,
             weight_kg: this.weight,
             height_cm: this.height,
@@ -76,7 +76,7 @@ import { useRegisterStore } from '../store'
 <template>
   <h1 id="title" >Eat good, live better<br>that's <span>it.</span></h1>
 
-  <v-responsive class="mx-auto px-5" max-width="450">
+  <v-responsive class="mx-auto px-5">
     <h2 id="formIcon"><v-icon>mdi-account-plus</v-icon></h2>
 
     <v-form v-model="form" @submit.prevent="register">

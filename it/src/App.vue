@@ -64,7 +64,7 @@ export default {
         </v-dialog>
     </div>
     <router-view></router-view>
-    <v-btn v-if="hasToken" class="mx-auto my-8" icon="mdi-calendar" @click="toggleTheme"></v-btn>
+    <v-btn v-if="hasToken" class="mx-auto my-8" icon="mdi-minus" @click="toggleTheme"></v-btn>
   </v-app>
 </template>
 

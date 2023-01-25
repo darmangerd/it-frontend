@@ -291,6 +291,12 @@ export default {
         },
 
         async summary() {
+            this.totalCalories = 0
+            this.totalProtein = 0
+            this.totalFat = 0
+            this.totalCarbs = 0
+            this.caloriesLeft = 0
+
             // calculate the total calories, protein, fat and carbs for the day and calories left
             for (let i = 0; i < this.foodItems.length; i++) {
                 this.totalCalories += Math.round(this.foodItems[i].calories * this.foodItems[i].quantity / 100)
@@ -409,6 +415,9 @@ export default {
                             'Authorization': `Token ${token}`,
                         }
                     })
+                    this.summary()
+
+
                 } catch (error) {
                     // further error handling here -> next release
                     console.error(error)

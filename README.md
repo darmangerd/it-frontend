@@ -14,7 +14,7 @@ Site web permettant de gérer son alimentation facilement et rapidement en lista
 
 #### Backend
 
-- [Python 3](https://www.python.org/downloads/)
+- [Python 3.10.6](https://www.python.org/downloads/)
 - [Pipenv](https://pipenv.pypa.io/en/latest/)
 
 #### Frontend
@@ -35,20 +35,19 @@ git clone git@gitlab-etu.ing.he-arc.ch:isc/2022-23/niveau-3/3298.4-developpement
 cd backend
 pipenv shell
 pipenv install
-pipenv install -dev
+pipenv install --dev
 ```
 
 3. Créer la base de données
 
 ```sh
+cd mysite/
 python manage.py migrate
-python manage.py runserver
 ```
 
 4. Lancer le serveur
 
 ```sh
-cd mysite/
 python manage.py runserver
 ```
 
@@ -67,20 +66,13 @@ cd frontend/it/
 npm install
 ```
 
-3. Installer les dépendances
-
-```sh
-cd frontend/it/
-npm install
-```
-
-4. Lancer le serveur (depuis le dossier frontend/it/)
+3. Lancer le serveur (depuis le dossier frontend/it/)
 
 ```sh
 npm run dev
 ```
 
-5. Accéder au site web
+4. Accéder au site web
 
 ```sh
 http://127.0.0.1:5173/
@@ -105,3 +97,10 @@ http://127.0.0.1:5173/
 ## Administration backend
 
 - Accéder à l'interface d'administration : `http://127.0.0.1:8000/admin/`
+
+Créer un super utilisateur. Il ne devra être utilisé que pour la création de compte administrateur et non sur le site web.
+
+```sh
+cd mysite/
+python manage.py createsuperuser
+```

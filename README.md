@@ -33,11 +33,19 @@ git clone git@gitlab-etu.ing.he-arc.ch:isc/2022-23/niveau-3/3298.4-developpement
 
 ```sh
 cd backend
-source .venv/bin/activate
 pipenv shell
+pipenv install
+pipenv install -dev
 ```
 
-3. Lancer le serveur
+3. Créer la base de données
+
+```sh
+python manage.py migrate
+python manage.py runserver
+```
+
+4. Lancer le serveur
 
 ```sh
 cd mysite/
@@ -59,17 +67,35 @@ cd frontend/it/
 npm install
 ```
 
-3. Lancer le serveur (depuis le dossier frontend/it/)
+3. Installer les dépendances
+
+```sh
+cd frontend/it/
+npm install
+```
+
+4. Lancer le serveur (depuis le dossier frontend/it/)
 
 ```sh
 npm run dev
 ```
 
-4. Accéder au site web
+5. Accéder au site web
 
 ```sh
 http://127.0.0.1:5173/
 ```
+
+## Guide du projet
+
+1. Il faut d'abord créer un compte utilisateur via l'interface de connexion.
+2. Une fois connecté, il est possible de créer des aliments, des repas, et de les ajouter à l'historique.
+3. D'abord, il faut créer un ou plusieurs aliments. Pour cela, il faut cliquer sur le bouton "Add a food" dans la barre de navigation. Une fois sur la page, il faut remplir les champs et cliquer sur "Add".
+4. Ensuite depuis la page principale, il faut sélectionner la date puis un aliment dans la liste déroulante. Une fois l'aliment sélectionné, on entre la quantité et on clic sur le bouton d'ajout. Cela ajoute l'aliment au repas de la date sélectionnée.
+5. Le graphique de compte des aliments est mis à jour automatiquement et le compte des calories/macro-nutriments est mis à jour en temps réel.
+6. Il est possible de supprimer un aliment du repas en cliquant sur le bouton de supression à côté de l'aliment dans le repas.
+7. Il est possible de modifier la quantité d'un aliment en entrant la modification dans le champ de quantité. La mise à jour se fait automatiquement.
+8. Pour se déconnecter, il faut cliquer sur le bouton "Logout" dans la barre de navigation.
 
 ## Documentation
 
